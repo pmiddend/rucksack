@@ -1,0 +1,74 @@
+#ifndef RUCKSACK_VIEWPORT_ADAPTOR_HPP_INCLUDED
+#define RUCKSACK_VIEWPORT_ADAPTOR_HPP_INCLUDED
+
+#include <rucksack/widget/base.hpp>
+#include <rucksack/widget/optional_parent.hpp>
+#include <sge/viewport/manager_fwd.hpp>
+#include <sge/renderer/device_fwd.hpp>
+#include <fcppt/noncopyable.hpp>
+#include <fcppt/signal/scoped_connection.hpp>
+
+namespace rucksack
+{
+namespace widget
+{
+/**
+ * The viewport adaptor is supposed to have just one single child. It
+ * synchronizes the size and position of this child with the given viewport. So
+ * in a hierarchy, this manager is supposed to be near the top.
+ *
+ * The operations size(...) and position(...) resize and reposition the
+ * viewport.
+ *
+ * Note that you _can_ use this class with a parent (in which case the viewport
+ * will be changed by the parent) but I don't know any use case for this, since
+ * a renderer can only have one viewport at a time.
+ */
+class viewport_adaptor
+:
+	public rucksack::widget::base
+{
+FCPPT_NONCOPYABLE(
+	viewport_adaptor);
+public:
+	// We need the renderer object for the size() and position() getters/setters.
+	// The viewport manager ironically doesn't give us access to the viewport
+	// directly.
+	explicit
+	viewport_adaptor(
+		widget::optional_parent const &,
+		sge::viewport::manager &,
+		sge::renderer::device &);
+
+	void
+	size(
+		rucksack::dim const &);
+
+	void
+	position(
+		rucksack::vector const &);
+
+	rucksack::dim const
+	size() const;
+
+	rucksack::vector const
+	position() const;
+
+	rucksack::axis_policy2 const
+	axis_policy() const;
+
+	void
+	relayout();
+
+	~viewport_adaptor();
+private:
+	sge::renderer::device &renderer_;
+	fcppt::signal::scoped_connection viewport_connection_;
+
+	void
+	manage_callback();
+};
+}
+}
+
+#endif
