@@ -2,6 +2,8 @@
 #define RUCKSACK_VIEWPORT_ADAPTOR_HPP_INCLUDED
 
 #include <rucksack/widget/base.hpp>
+#include <rucksack/class_symbol.hpp>
+#include <rucksack/symbol.hpp>
 #include <rucksack/widget/optional_parent.hpp>
 #include <sge/viewport/manager_fwd.hpp>
 #include <sge/renderer/device_fwd.hpp>
@@ -24,7 +26,7 @@ namespace widget
  * will be changed by the parent) but I don't know any use case for this, since
  * a renderer can only have one viewport at a time.
  */
-class viewport_adaptor
+class RUCKSACK_CLASS_SYMBOL viewport_adaptor
 :
 	public rucksack::widget::base
 {
@@ -34,33 +36,33 @@ public:
 	// We need the renderer object for the size() and position() getters/setters.
 	// The viewport manager ironically doesn't give us access to the viewport
 	// directly.
-	explicit
+	RUCKSACK_SYMBOL explicit
 	viewport_adaptor(
 		widget::optional_parent const &,
 		sge::viewport::manager &,
 		sge::renderer::device &);
 
-	void
+	RUCKSACK_SYMBOL void
 	size(
 		rucksack::dim const &);
 
-	void
+	RUCKSACK_SYMBOL void
 	position(
 		rucksack::vector const &);
 
-	rucksack::dim const
+	RUCKSACK_SYMBOL rucksack::dim const
 	size() const;
 
-	rucksack::vector const
+	RUCKSACK_SYMBOL rucksack::vector const
 	position() const;
 
-	rucksack::axis_policy2 const
+	RUCKSACK_SYMBOL rucksack::axis_policy2 const
 	axis_policy() const;
 
-	void
+	RUCKSACK_SYMBOL void
 	relayout();
 
-	~viewport_adaptor();
+	RUCKSACK_SYMBOL ~viewport_adaptor();
 private:
 	sge::renderer::device &renderer_;
 	fcppt::signal::scoped_connection viewport_connection_;

@@ -3,6 +3,8 @@
 
 #include <rucksack/widget/optional_parent.hpp>
 #include <rucksack/widget/base.hpp>
+#include <rucksack/class_symbol.hpp>
+#include <rucksack/symbol.hpp>
 #include <rucksack/alignment.hpp>
 #include <rucksack/transient_layout_data.hpp>
 #include <rucksack/axis.hpp>
@@ -22,14 +24,14 @@ namespace widget
  * specifies the "major axis" of alignment; hozirontal alignment has axis::x,
  * vertical has axis::y).
  */
-class box
+class RUCKSACK_CLASS_SYMBOL box
 :
 	public widget::base
 {
 FCPPT_NONCOPYABLE(
 	box);
 public:
-	explicit
+	RUCKSACK_SYMBOL explicit
 	box(
 		widget::optional_parent const &,
 		rucksack::alignment::type const &,
@@ -38,22 +40,22 @@ public:
 
 	// Nothing fancy, just set the stored size (this should NOT cause a relayout
 	// immediately)
-	void
+	RUCKSACK_SYMBOL void
 	size(
 		rucksack::dim const &);
 
 	// Nothing fancy, just set the stored position (this should NOT cause a
 	// relayout immediately)
-	void
+	RUCKSACK_SYMBOL void
 	position(
 		rucksack::vector const &);
 
 	// Nothing fancy, just return the stored size
-	rucksack::dim const
+	RUCKSACK_SYMBOL rucksack::dim const
 	size() const;
 
 	// Nothing fancy, just return the stored position
-	rucksack::vector const
+	RUCKSACK_SYMBOL rucksack::vector const
 	position() const;
 
 	// We have to calculate/set:
@@ -80,14 +82,14 @@ public:
 	//
 	// Also note that currently, box widgets always have a preferred size (which
 	// might be equal to the minimum size).
-	rucksack::axis_policy2 const
+	RUCKSACK_SYMBOL rucksack::axis_policy2 const
 	axis_policy() const;
 
 	// This does a lot of stuff, see the code itself.
-	void
+	RUCKSACK_SYMBOL void
 	relayout();
 
-	~box();
+	RUCKSACK_SYMBOL ~box();
 private:
 	typedef
 	std::map<widget::base*,rucksack::transient_layout_data>

@@ -6,6 +6,7 @@
 #include <fcppt/text.hpp>
 #include <fcppt/math/dim/structure_cast.hpp>
 #include <fcppt/math/vector/structure_cast.hpp>
+#include <fcppt/math/box/basic_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <fcppt/tr1/functional.hpp>
 #include <fcppt/config/external_end.hpp>

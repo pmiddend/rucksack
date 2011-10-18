@@ -76,10 +76,16 @@ rucksack::widget::box::axis_policy() const
 			0;
 
 	bool
-		is_expanding_minor = false,
-		is_expanding_major = false;
+		is_expanding_minor =
+			false,
+		is_expanding_major =
+			false;
 
-	for(base::child_list::const_iterator child = children_.begin(); child != children_.end(); ++child)
+	for(
+		base::child_list::const_iterator child =
+			children_.begin();
+		child != children_.end();
+		++child)
 	{
 		// Less to type with these three variables :)
 		rucksack::axis_policy2 const this_axis_policy =
@@ -239,6 +245,8 @@ rucksack::widget::box::relayout()
 
 		child->position(
 			new_position);
+
+		child->relayout();
 
 		current_major_position += hole_size + transient_data[&(*child)].size()[this->major_axis()];
 	}

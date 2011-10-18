@@ -3,6 +3,7 @@
 
 #include <rucksack/vector.hpp>
 #include <rucksack/dim.hpp>
+#include <rucksack/symbol.hpp>
 #include <fcppt/math/vector/basic_impl.hpp>
 #include <fcppt/math/dim/basic_impl.hpp>
 
@@ -11,21 +12,21 @@ namespace rucksack
 class transient_layout_data
 {
 public:
-	explicit
+	RUCKSACK_SYMBOL explicit
 	transient_layout_data();
 
-	void
+	RUCKSACK_SYMBOL void
 	position(
 		rucksack::vector const &);
 
-	void
+	RUCKSACK_SYMBOL void
 	size(
 		rucksack::dim const &);
 
-	rucksack::vector const &
+	RUCKSACK_SYMBOL rucksack::vector const &
 	position() const;
 
-	rucksack::dim const &
+	RUCKSACK_SYMBOL rucksack::dim const &
 	size() const;
 private:
 	rucksack::vector position_;

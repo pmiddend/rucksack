@@ -3,6 +3,8 @@
 
 #include <rucksack/widget/optional_parent.hpp>
 #include <rucksack/vector.hpp>
+#include <rucksack/class_symbol.hpp>
+#include <rucksack/symbol.hpp>
 #include <rucksack/axis_policy2.hpp>
 #include <rucksack/dim.hpp>
 #include <fcppt/math/vector/basic_impl.hpp>
@@ -16,7 +18,7 @@ namespace rucksack
 {
 namespace widget
 {
-class base
+class RUCKSACK_CLASS_SYMBOL base
 :
 	public
 		boost::intrusive::list_base_hook

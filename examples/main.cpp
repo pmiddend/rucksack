@@ -183,7 +183,25 @@ try
 
 	rucksack::widget::box outer_box(
 		rucksack::widget::optional_parent(),
-		rucksack::alignment::right_or_bottom,
+		rucksack::alignment::center,
+		rucksack::axis::x,
+		rucksack::aspect(
+			1,
+			1));
+
+	rucksack::widget::box left_box(
+		rucksack::widget::optional_parent(
+			outer_box),
+		rucksack::alignment::center,
+		rucksack::axis::y,
+		rucksack::aspect(
+			1,
+			1));
+
+	rucksack::widget::box right_box(
+		rucksack::widget::optional_parent(
+			outer_box),
+		rucksack::alignment::center,
 		rucksack::axis::y,
 		rucksack::aspect(
 			1,
@@ -191,7 +209,7 @@ try
 
 	sprite_widget inner_sprite(
 		rucksack::widget::optional_parent(
-			outer_box),
+			left_box),
 		sge::sprite::default_parameters<sprite_choices>()
 			.any_color(
 				sge::image::colors::red()),
@@ -214,7 +232,7 @@ try
 
 	sprite_widget inner_sprite2(
 		rucksack::widget::optional_parent(
-			outer_box),
+			right_box),
 		sge::sprite::default_parameters<sprite_choices>()
 			.any_color(
 				sge::image::colors::green()),
@@ -254,7 +272,28 @@ try
 			.any_color(
 				sge::image::colors::blue()).elements());
 
-	std::cout << "Inner sprite position: " << inner_sprite.position() << ", size: " << inner_sprite.size() << "\n";
+	sprite_object left_box_sprite(
+		sge::sprite::default_parameters<sprite_choices>()
+			.pos(
+				left_box.position())
+			.size(
+				left_box.size())
+			.any_color(
+				sge::image::colors::cyan()).elements());
+
+	sprite_object right_box_sprite(
+		sge::sprite::default_parameters<sprite_choices>()
+			.pos(
+				right_box.position())
+			.size(
+				right_box.size())
+			.any_color(
+				sge::image::colors::magenta()).elements());
+
+	std::cout << "left box position: " << left_box.position() << ", size: " << left_box.size() << "\n";
+	std::cout << "right box position: " << right_box.position() << ", size: " << right_box.size() << "\n";
+	std::cout << "inner position: " << inner_sprite.position() << ", size: " << inner_sprite2.size() << "\n";
+	std::cout << "inner2 position: " << inner_sprite2.position() << ", size: " << inner_sprite2.size() << "\n";
 
 	bool running = true;
 
@@ -281,6 +320,12 @@ try
 		sge::sprite::render_one(
 			ss,
 			outer_box_sprite);
+		sge::sprite::render_one(
+			ss,
+			left_box_sprite);
+		sge::sprite::render_one(
+			ss,
+			right_box_sprite);
 		sge::sprite::render_one(
 			ss,
 			inner_sprite.sprite());

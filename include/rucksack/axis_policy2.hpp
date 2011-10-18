@@ -3,6 +3,7 @@
 
 #include <rucksack/axis_policy.hpp>
 #include <rucksack/dim.hpp>
+#include <rucksack/symbol.hpp>
 #include <rucksack/aspect.hpp>
 #include <fcppt/math/dim/basic_impl.hpp>
 
@@ -11,23 +12,23 @@ namespace rucksack
 class axis_policy2
 {
 public:
-	explicit
+	RUCKSACK_SYMBOL explicit
 	axis_policy2(
 		rucksack::axis_policy const &,
 		rucksack::axis_policy const &,
 		rucksack::aspect const &);
 
-	rucksack::axis_policy const &
+	RUCKSACK_SYMBOL rucksack::axis_policy const &
 	x() const;
 
-	rucksack::axis_policy const &
+	RUCKSACK_SYMBOL rucksack::axis_policy const &
 	y() const;
 
-	rucksack::axis_policy const &
+	RUCKSACK_SYMBOL rucksack::axis_policy const &
 	operator[](
 		rucksack::dim::size_type) const;
 
-	rucksack::aspect const &
+	RUCKSACK_SYMBOL rucksack::aspect const &
 	aspect() const;
 private:
 	rucksack::axis_policy x_,y_;

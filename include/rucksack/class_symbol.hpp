@@ -1,0 +1,8 @@
+#ifndef RUCKSACK_CLASS_SYMBOL_HPP_INCLUDED
+#define RUCKSACK_CLASS_SYMBOL_HPP_INCLUDED
+
+#include <fcppt/class_symbol.hpp>
+
+#define RUCKSACK_CLASS_SYMBOL FCPPT_CLASS_SYMBOL
+
+#endif

@@ -4,6 +4,7 @@
 #include <rucksack/minimum_size.hpp>
 #include <rucksack/preferred_size.hpp>
 #include <rucksack/is_expanding.hpp>
+#include <rucksack/symbol.hpp>
 #include <fcppt/optional_impl.hpp>
 
 namespace rucksack
@@ -11,19 +12,19 @@ namespace rucksack
 class axis_policy
 {
 public:
-	explicit
+	RUCKSACK_SYMBOL explicit
 	axis_policy(
 		rucksack::minimum_size const &,
 		rucksack::preferred_size const &,
 		rucksack::is_expanding const &);
 
-	rucksack::scalar
+	RUCKSACK_SYMBOL rucksack::scalar
 	minimum_size() const;
 
-	rucksack::optional_scalar
+	RUCKSACK_SYMBOL rucksack::optional_scalar
 	preferred_size() const;
 
-	bool
+	RUCKSACK_SYMBOL bool
 	is_expanding() const;
 private:
 	rucksack::scalar minimum_size_;

@@ -2,21 +2,22 @@
 #define RUCKSACK_ASPECT_HPP_INCLUDED
 
 #include <rucksack/scalar.hpp>
+#include <rucksack/symbol.hpp>
 
 namespace rucksack
 {
 class aspect
 {
 public:
-	explicit
+	RUCKSACK_SYMBOL explicit
 	aspect(
 		rucksack::scalar,
 		rucksack::scalar);
 
-	rucksack::scalar
+	RUCKSACK_SYMBOL rucksack::scalar
 	x() const;
 
-	rucksack::scalar
+	RUCKSACK_SYMBOL rucksack::scalar
 	y() const;
 private:
 	rucksack::scalar x_,y_;
