@@ -7,10 +7,15 @@
 #include <fcppt/math/dim/structure_cast.hpp>
 #include <fcppt/math/vector/structure_cast.hpp>
 #include <fcppt/math/box/basic_impl.hpp>
+#include <fcppt/preprocessor/disable_vc_warning.hpp>
+#include <fcppt/preprocessor/pop_warning.hpp>
+#include <fcppt/preprocessor/push_warning.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <fcppt/tr1/functional.hpp>
 #include <fcppt/config/external_end.hpp>
 
+FCPPT_PP_PUSH_WARNING
+FCPPT_PP_DISABLE_VC_WARNING(4355)
 rucksack::widget::viewport_adaptor::viewport_adaptor(
 	widget::optional_parent const &_parent,
 	sge::viewport::manager &_viewport,
@@ -27,6 +32,7 @@ rucksack::widget::viewport_adaptor::viewport_adaptor(
 				this)))
 {
 }
+FCPPT_PP_POP_WARNING
 
 void
 rucksack::widget::viewport_adaptor::size(

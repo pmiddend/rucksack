@@ -37,6 +37,7 @@
 #include <fcppt/math/vector/output.hpp>
 #include <fcppt/signal/scoped_connection.hpp>
 #include <fcppt/exception.hpp>
+#include <fcppt/noncopyable.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <boost/mpl/vector/vector10.hpp>
@@ -82,6 +83,8 @@ class sprite_widget
 :
 	public rucksack::widget::base
 {
+FCPPT_NONCOPYABLE(
+	sprite_widget);
 public:
 	explicit
 	sprite_widget(
@@ -95,6 +98,10 @@ public:
 			_parameters.elements()),
 		axis_policy_(
 			_axis_policy)
+	{
+	}
+
+	~sprite_widget()
 	{
 	}
 
