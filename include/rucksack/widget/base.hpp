@@ -49,6 +49,7 @@ public:
 	virtual void
 	relayout() = 0;
 
+	RUCKSACK_SYMBOL
 	virtual ~base() = 0;
 protected:
 	typedef
@@ -61,6 +62,7 @@ protected:
 
 	child_list children_;
 
+	RUCKSACK_SYMBOL
 	explicit
 	base(
 		widget::optional_parent const &);
