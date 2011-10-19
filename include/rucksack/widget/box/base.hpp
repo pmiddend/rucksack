@@ -7,7 +7,6 @@
 #include <rucksack/class_symbol.hpp>
 #include <rucksack/symbol.hpp>
 #include <rucksack/alignment.hpp>
-#include <rucksack/transient_layout_data.hpp>
 #include <rucksack/axis.hpp>
 #include <rucksack/aspect.hpp>
 #include <fcppt/noncopyable.hpp>

@@ -61,11 +61,7 @@ SET(
 	include/rucksack/optional_scalar.hpp
 	include/rucksack/preferred_size.hpp
 	include/rucksack/scalar.hpp
-	include/rucksack/size_policy.hpp
-	include/rucksack/size_policy2.hpp
-	include/rucksack/size_policy_field.hpp
 	include/rucksack/symbol.hpp
-	include/rucksack/transient_layout_data.hpp
 	include/rucksack/vector.hpp
 	include/rucksack/widget/base.hpp
 	include/rucksack/widget/base_fwd.hpp
@@ -77,8 +73,6 @@ SET(
 	src/rucksack/aspect.cpp
 	src/rucksack/axis_policy.cpp
 	src/rucksack/axis_policy2.cpp
-	src/rucksack/size_policy2.cpp
-	src/rucksack/transient_layout_data.cpp
 	src/rucksack/widget/base.cpp
 	src/rucksack/widget/box/base.cpp
 	src/rucksack/widget/box/child_information.cpp
