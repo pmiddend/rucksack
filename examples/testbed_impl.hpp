@@ -50,6 +50,9 @@ public:
 	void
 	render();
 
+	sge::systems::instance const &
+	systems() const;
+
 	~testbed_impl();
 private:
 	typedef

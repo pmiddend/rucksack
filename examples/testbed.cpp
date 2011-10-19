@@ -43,6 +43,13 @@ rucksack::examples::testbed::render()
 		impl_->render();
 }
 
+sge::systems::instance const &
+rucksack::examples::testbed::systems() const
+{
+	return
+		impl_->systems();
+}
+
 rucksack::examples::testbed::~testbed()
 {
 }

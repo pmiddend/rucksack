@@ -68,6 +68,7 @@ SET(
 	include/rucksack/widget/base_fwd.hpp
 	include/rucksack/widget/box/base.hpp
 	include/rucksack/widget/box/child_information.hpp
+	include/rucksack/widget/dummy.hpp
 	include/rucksack/widget/enumeration.hpp
 	include/rucksack/widget/master_and_slaves.hpp
 	include/rucksack/widget/optional_parent.hpp
@@ -79,6 +80,7 @@ SET(
 	src/rucksack/widget/base.cpp
 	src/rucksack/widget/box/base.cpp
 	src/rucksack/widget/box/child_information.cpp
+	src/rucksack/widget/dummy.cpp
 	src/rucksack/widget/enumeration.cpp
 	src/rucksack/widget/master_and_slaves.cpp
 	src/rucksack/widget/viewport_adaptor.cpp

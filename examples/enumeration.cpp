@@ -1,197 +1,25 @@
+#include "testbed.hpp"
 #include <rucksack/widget/enumeration.hpp>
 #include <rucksack/widget/viewport_adaptor.hpp>
-#include <sge/image/color/rgba8.hpp>
-#include <sge/image/color/rgba8_format.hpp>
-#include <sge/image/colors.hpp>
-#include <sge/input/keyboard/action.hpp>
-#include <sge/input/keyboard/device.hpp>
-#include <sge/log/global.hpp>
-#include <sge/renderer/no_multi_sampling.hpp>
-#include <sge/renderer/parameters.hpp>
-#include <sge/renderer/scoped_block.hpp>
-#include <sge/renderer/state/bool.hpp>
-#include <sge/renderer/state/color.hpp>
-#include <sge/renderer/state/list.hpp>
-#include <sge/renderer/state/trampoline.hpp>
-#include <sge/renderer/state/var.hpp>
-#include <sge/sprite/choices.hpp>
-#include <sge/sprite/external_system_impl.hpp>
-#include <sge/sprite/object.hpp>
-#include <sge/sprite/parameters.hpp>
-#include <sge/sprite/render_one.hpp>
-#include <sge/sprite/system.hpp>
-#include <sge/sprite/type_choices.hpp>
-#include <sge/sprite/with_color.hpp>
-#include <sge/sprite/with_dim.hpp>
+#include <rucksack/widget/dummy.hpp>
 #include <sge/systems/instance.hpp>
-#include <sge/systems/list.hpp>
-#include <sge/systems/parameterless.hpp>
-#include <sge/systems/running_to_false.hpp>
-#include <sge/viewport/fill_on_resize.hpp>
-#include <sge/window/instance.hpp>
-#include <fcppt/io/cerr.hpp>
-#include <fcppt/log/activate_levels.hpp>
-#include <fcppt/log/level.hpp>
-#include <fcppt/math/dim/structure_cast.hpp>
-#include <fcppt/math/dim/output.hpp>
-#include <fcppt/math/vector/output.hpp>
-#include <fcppt/make_unique_ptr.hpp>
-#include <fcppt/container/ptr/push_back_unique_ptr.hpp>
-#include <fcppt/signal/scoped_connection.hpp>
-#include <fcppt/exception.hpp>
-#include <fcppt/noncopyable.hpp>
+#include <sge/image/colors.hpp>
+#include <sge/image/color/any/object.hpp>
 #include <fcppt/text.hpp>
+#include <fcppt/io/cerr.hpp>
 #include <fcppt/config/external_begin.hpp>
-#include <boost/mpl/vector/vector10.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
 #include <cstdlib>
-#include <iostream>
 #include <fcppt/config/external_end.hpp>
-
-#include <sge/sprite/default_parameters.hpp>
-#include <sge/sprite/defaults/defaults.hpp>
-
-namespace
-{
-typedef
-sge::sprite::choices
-<
-	sge::sprite::type_choices
-	<
-		rucksack::scalar,
-		float,
-		sge::image::color::rgba8_format
-	>,
-	boost::mpl::vector2
-	<
-		sge::sprite::with_dim,
-		sge::sprite::with_color
-	>
->
-sprite_choices;
-
-typedef
-sge::sprite::system<sprite_choices>::type
-sprite_system;
-
-typedef
-sge::sprite::object<sprite_choices>
-sprite_object;
-
-typedef
-sge::sprite::parameters<sprite_choices>
-sprite_parameters;
-
-class sprite_widget
-:
-	public rucksack::widget::base
-{
-FCPPT_NONCOPYABLE(
-	sprite_widget);
-public:
-	explicit
-	sprite_widget(
-		sprite_parameters const &_parameters,
-		rucksack::axis_policy2 const &_axis_policy)
-	:
-		rucksack::widget::base(
-			rucksack::widget::optional_parent()),
-		sprite_(
-			_parameters.elements()),
-		axis_policy_(
-			_axis_policy)
-	{
-	}
-
-	~sprite_widget()
-	{
-	}
-
-	void
-	size(
-		rucksack::dim const &_size)
-	{
-		sprite_.size(
-			_size);
-	}
-
-	void
-	position(
-		rucksack::vector const &_pos)
-	{
-		sprite_.pos(
-			_pos);
-	}
-
-	rucksack::dim const
-	size() const
-	{
-		return sprite_.size();
-	}
-
-	rucksack::vector const
-	position() const
-	{
-		return sprite_.pos();
-	}
-
-	rucksack::axis_policy2 const
-	axis_policy() const
-	{
-		return axis_policy_;
-	}
-
-	void
-	relayout()
-	{
-	}
-
-	sprite_object const
-	sprite() const
-	{
-		return sprite_;
-	}
-private:
-	sprite_object sprite_;
-	rucksack::axis_policy2 axis_policy_;
-};
-}
 
 int main()
 try
 {
-	fcppt::log::activate_levels(
-		sge::log::global(),
-		fcppt::log::level::debug);
-
-	sge::window::dim const window_dim(
-		1024,
-		768);
-
-	sge::systems::instance const sys(
-		sge::systems::list()
-		(sge::systems::window(
-				sge::window::simple_parameters(
-					FCPPT_TEXT("rucksack main example"),
-					window_dim)))
-		(sge::systems::renderer(
-				sge::renderer::parameters(
-					sge::renderer::visual_depth::depth32,
-					sge::renderer::depth_stencil_buffer::off,
-					sge::renderer::vsync::on,
-					sge::renderer::no_multi_sampling),
-				sge::viewport::fill_on_resize()))
-		(sge::systems::input(
-				sge::systems::input_helper_field(
-					sge::systems::input_helper::keyboard_collector),
-				sge::systems::cursor_option_field::null())));
-
-	sprite_system ss(
-		sys.renderer());
+	rucksack::examples::testbed testbed_(
+		FCPPT_TEXT("rucksack enumeration test"));
 
 	rucksack::widget::viewport_adaptor viewport_box(
-		sys.viewport_manager(),
-		sys.renderer());
+		testbed_.systems().viewport_manager(),
+		testbed_.systems().renderer());
 
 	rucksack::widget::enumeration enumeration_box(
 		rucksack::padding(
@@ -203,87 +31,36 @@ try
 	viewport_box.child(
 		enumeration_box);
 
-	typedef
-	boost::ptr_vector<sprite_widget>
-	sprite_sequence;
+	rucksack::widget::dummy inner_sprite(
+		rucksack::axis_policy2(
+			rucksack::axis_policy(
+				rucksack::minimum_size(
+					100),
+				rucksack::preferred_size(),
+				rucksack::is_expanding(
+					false)),
+			rucksack::axis_policy(
+				rucksack::minimum_size(
+					50),
+				rucksack::preferred_size(),
+				rucksack::is_expanding(
+					false)),
+			rucksack::aspect(
+				1,
+				1)));
 
-	sprite_sequence sprites;
-	fcppt::container::ptr::push_back_unique_ptr(
-		sprites,
-		fcppt::make_unique_ptr<sprite_widget>(
-			sge::sprite::default_parameters<sprite_choices>()
-				.any_color(
-					sge::image::colors::red()),
-			rucksack::axis_policy2(
-				rucksack::axis_policy(
-					rucksack::minimum_size(
-						100),
-					rucksack::preferred_size(),
-					rucksack::is_expanding(
-						false)),
-				rucksack::axis_policy(
-					rucksack::minimum_size(
-						50),
-					rucksack::preferred_size(),
-					rucksack::is_expanding(
-						false)),
-				rucksack::aspect(
-					1,
-					1))));
+	testbed_.add_widget(
+		viewport_box,
+		sge::image::colors::blue());
 
+	testbed_.add_widget(
+		inner_sprite,
+		sge::image::colors::red());
 
-	for(
-		sprite_sequence::iterator it =
-			sprites.begin();
-		it != sprites.end();
-		++it)
-		enumeration_box.push_back_child(
-			*it);
+	enumeration_box.push_back_child(
+		inner_sprite);
 
-	bool running = true;
-
-	fcppt::signal::scoped_connection const cb(
-		sys.keyboard_collector().key_callback(
-			sge::input::keyboard::action(
-				sge::input::keyboard::key_code::escape,
-				sge::systems::running_to_false(
-					running))));
-
-	sys.renderer().state(
-		sge::renderer::state::list
-		(sge::renderer::state::bool_::clear_back_buffer = true)
-		(sge::renderer::state::color::back_buffer_clear_color = sge::image::colors::black()));
-
-	while(
-		running)
-	{
-		sys.window().dispatch();
-
-		sge::renderer::scoped_block const block_(
-			sys.renderer());
-
-		sprite_object enumeration_box_sprite(
-			sge::sprite::default_parameters<sprite_choices>()
-				.pos(
-					enumeration_box.position())
-				.size(
-					enumeration_box.size())
-				.any_color(
-					sge::image::colors::blue()).elements());
-
-		sge::sprite::render_one(
-			ss,
-			enumeration_box_sprite);
-
-		for(
-			sprite_sequence::iterator it =
-				sprites.begin();
-			it != sprites.end();
-			++it)
-			sge::sprite::render_one(
-				ss,
-				it->sprite());
-	}
+	testbed_.run();
 }
 catch(
 	fcppt::exception const &error)

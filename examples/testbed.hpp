@@ -4,6 +4,7 @@
 #include "testbed_impl_fwd.hpp"
 #include <rucksack/widget/base_fwd.hpp>
 #include <sge/image/color/any/object_fwd.hpp>
+#include <sge/systems/instance_fwd.hpp>
 #include <fcppt/string.hpp>
 #include <fcppt/scoped_ptr.hpp>
 #include <fcppt/noncopyable.hpp>
@@ -34,6 +35,9 @@ public:
 
 	void
 	render();
+
+	sge::systems::instance const &
+	systems() const;
 
 	~testbed();
 private:

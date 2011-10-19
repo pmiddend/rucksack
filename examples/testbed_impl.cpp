@@ -13,6 +13,7 @@
 #include <sge/renderer/state/list.hpp>
 #include <sge/renderer/state/scoped.hpp>
 #include <sge/renderer/visual_depth.hpp>
+#include <sge/log/global.hpp>
 #include <sge/renderer/vsync.hpp>
 #include <sge/sprite/default_equal.hpp>
 #include <sge/sprite/dont_sort.hpp>
@@ -27,6 +28,8 @@
 #include <sge/viewport/fill_on_resize.hpp>
 #include <sge/window/simple_parameters.hpp>
 #include <fcppt/container/bitfield/basic_impl.hpp>
+#include <fcppt/log/activate_levels.hpp>
+#include <fcppt/log/level.hpp>
 #include <fcppt/text.hpp>
 
 rucksack::examples::testbed_impl::testbed_impl(
@@ -60,8 +63,11 @@ rucksack::examples::testbed_impl::testbed_impl(
 				sge::systems::running_to_false(
 					running_)))),
 	running_(
-		false)
+		true)
 {
+	fcppt::log::activate_levels(
+		sge::log::global(),
+		fcppt::log::level::debug);
 }
 
 void
@@ -138,6 +144,12 @@ rucksack::examples::testbed_impl::render()
 		raw_sprites.end(),
 		sge::sprite::dont_sort(),
 		sge::sprite::default_equal());
+}
+
+sge::systems::instance const &
+rucksack::examples::testbed_impl::systems() const
+{
+	return systems_;
 }
 
 rucksack::examples::testbed_impl::~testbed_impl()
