@@ -90,6 +90,10 @@ rucksack::widget::master_and_slaves::axis_policy() const
 void
 rucksack::widget::master_and_slaves::relayout()
 {
+	surrounding_box_.position(
+		this->position());
+	surrounding_box_.size(
+		this->size());
 	surrounding_box_.relayout();
 }
 
@@ -97,10 +101,13 @@ void
 rucksack::widget::master_and_slaves::master_pane(
 	widget::base &_master_pane)
 {
-	surrounding_box_.pop_front_child();
+	if(master_pane_)
+		surrounding_box_.pop_front_child();
 	surrounding_box_.push_front_child(
 		_master_pane,
 		rucksack::alignment::center);
+	master_pane_ =
+		&_master_pane;
 }
 
 void

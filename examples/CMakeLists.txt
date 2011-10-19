@@ -30,3 +30,4 @@ ENDFUNCTION()
 
 ADD_RUCKSACK_EXAMPLE(box "")
 ADD_RUCKSACK_EXAMPLE(enumeration "")
+ADD_RUCKSACK_EXAMPLE(master_and_slaves "")

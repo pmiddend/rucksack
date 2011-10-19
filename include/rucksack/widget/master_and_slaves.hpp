@@ -30,8 +30,7 @@ class RUCKSACK_CLASS_SYMBOL master_and_slaves
 FCPPT_NONCOPYABLE(
 	master_and_slaves);
 public:
-	RUCKSACK_SYMBOL
-	explicit
+	RUCKSACK_SYMBOL explicit
 	master_and_slaves(
 		rucksack::padding const &);
 
