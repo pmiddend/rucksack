@@ -59,6 +59,7 @@ SET(
 	include/rucksack/minimum_size.hpp
 	include/rucksack/optional_dim.hpp
 	include/rucksack/optional_scalar.hpp
+	include/rucksack/padding.hpp
 	include/rucksack/preferred_size.hpp
 	include/rucksack/scalar.hpp
 	include/rucksack/symbol.hpp
@@ -67,6 +68,8 @@ SET(
 	include/rucksack/widget/base_fwd.hpp
 	include/rucksack/widget/box/base.hpp
 	include/rucksack/widget/box/child_information.hpp
+	include/rucksack/widget/enumeration.hpp
+	include/rucksack/widget/master_and_slaves.hpp
 	include/rucksack/widget/optional_parent.hpp
 	include/rucksack/widget/viewport_adaptor.hpp
 	src/rucksack/alignment2.cpp
@@ -76,6 +79,8 @@ SET(
 	src/rucksack/widget/base.cpp
 	src/rucksack/widget/box/base.cpp
 	src/rucksack/widget/box/child_information.cpp
+	src/rucksack/widget/enumeration.cpp
+	src/rucksack/widget/master_and_slaves.cpp
 	src/rucksack/widget/viewport_adaptor.cpp
 )
 

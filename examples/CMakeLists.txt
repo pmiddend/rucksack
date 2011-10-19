@@ -1,3 +1,6 @@
+ADD_LIBRARY(
+	rucksack_testbed STATIC testbed.cpp testbed_impl.cpp)
+
 FUNCTION(
 	ADD_RUCKSACK_EXAMPLE
 	EXAMPLE_NAME
@@ -12,6 +15,7 @@ FUNCTION(
 	TARGET_LINK_LIBRARIES (
 		${FULL_NAME}
 		rucksack
+		rucksack_testbed
 		${ADDITIONAL_LIBRARIES}
 		${SGE_LIBRARIES}
 		${Fcppt_LIBRARIES})
@@ -24,4 +28,5 @@ FUNCTION(
 	)
 ENDFUNCTION()
 
-ADD_RUCKSACK_EXAMPLE(main "")
+ADD_RUCKSACK_EXAMPLE(box "")
+ADD_RUCKSACK_EXAMPLE(enumeration "")

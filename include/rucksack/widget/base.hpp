@@ -49,6 +49,13 @@ public:
 	virtual void
 	relayout() = 0;
 
+	RUCKSACK_SYMBOL void
+	parent(
+		rucksack::widget::optional_parent const &);
+
+	RUCKSACK_SYMBOL rucksack::widget::optional_parent const &
+	parent() const;
+
 	RUCKSACK_SYMBOL
 	virtual ~base() = 0;
 protected:
@@ -62,13 +69,6 @@ protected:
 		base &);
 private:
 	rucksack::widget::optional_parent parent_;
-
-	void
-	parent(
-		rucksack::widget::optional_parent const &);
-
-	rucksack::widget::optional_parent const &
-	parent() const;
 };
 }
 }

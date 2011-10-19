@@ -251,16 +251,52 @@ rucksack::widget::box::base::push_back_child(
 	widget::base &_new_child,
 	rucksack::alignment::type const _alignment)
 {
-	children_.insert(
+	children_.push_back(
 		std::make_pair(
 			&_new_child,
 			box::child_information(
 				_alignment,
 				rucksack::dim())));
+
+	_new_child.parent(
+		widget::optional_parent(
+			*this));
+}
+
+void
+rucksack::widget::box::base::push_front_child(
+	widget::base &_new_child,
+	rucksack::alignment::type const _alignment)
+{
+	children_.push_front(
+		std::make_pair(
+			&_new_child,
+			box::child_information(
+				_alignment,
+				rucksack::dim())));
+
+	_new_child.parent(
+		widget::optional_parent(
+			*this));
+}
+
+void
+rucksack::widget::box::base::pop_front_child()
+{
+	children_.front().first->parent(
+		widget::optional_parent());
+	children_.pop_front();
 }
 
 rucksack::widget::box::base::~base()
 {
+	for(
+		child_information::iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
+		widget_ptr_information_pair_it->first->parent(
+			widget::optional_parent());
 }
 
 rucksack::dim::size_type
@@ -377,12 +413,12 @@ rucksack::widget::box::base::relayout_major_axis()
 				++child_ptr)
 			{
 				rucksack::dim current_size =
-					children_[*child_ptr].size();
+					this->information_for_ptr(*child_ptr).size();
 
 				current_size[axis_] =
 					*((*child_ptr)->axis_policy()[this->major_axis()].preferred_size());
 
-				children_[*child_ptr].size(
+				this->information_for_ptr(*child_ptr).size(
 					current_size);
 			}
 
@@ -401,7 +437,7 @@ rucksack::widget::box::base::relayout_major_axis()
 				++child_ptr)
 			{
 				rucksack::dim current_size =
-					children_[*child_ptr].size();
+					this->information_for_ptr(*child_ptr).size();
 
 				rucksack::scalar const preferred_size =
 					*((*child_ptr)->axis_policy()[this->major_axis()].preferred_size());
@@ -415,7 +451,7 @@ rucksack::widget::box::base::relayout_major_axis()
 				remaining -=
 					current_size[axis_] - (*child_ptr)->axis_policy()[this->major_axis()].minimum_size();
 
-				children_[*child_ptr].size(
+				this->information_for_ptr(*child_ptr).size(
 					current_size);
 			}
 		}
@@ -449,12 +485,12 @@ rucksack::widget::box::base::relayout_major_axis()
 			++child_ptr)
 		{
 			rucksack::dim current_size =
-				children_[*child_ptr].size();
+				this->information_for_ptr(*child_ptr).size();
 
 			current_size[axis_] +=
 				remaining / static_cast<rucksack::scalar>(widgets_which_expand.size());
 
-			children_[*child_ptr].size(
+			this->information_for_ptr(*child_ptr).size(
 				current_size);
 		}
 	}
@@ -508,6 +544,36 @@ void
 rucksack::widget::box::base::child_destroyed(
 	widget::base &_child)
 {
-	children_.erase(
-		&_child);
+	for(
+		child_information::iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
+	{
+		if(widget_ptr_information_pair_it->first == &_child)
+		{
+			children_.erase(
+				widget_ptr_information_pair_it);
+			return;
+		}
+	}
+
+	FCPPT_ASSERT_UNREACHABLE
+}
+
+rucksack::widget::box::child_information &
+rucksack::widget::box::base::information_for_ptr(
+	widget::base const * const ptr)
+{
+	for(
+		child_information::iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
+	{
+		if(widget_ptr_information_pair_it->first == ptr)
+			return widget_ptr_information_pair_it->second;
+	}
+
+	FCPPT_ASSERT_UNREACHABLE
 }

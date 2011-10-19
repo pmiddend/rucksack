@@ -1,5 +1,5 @@
-#include <rucksack/widget/base.hpp>
-#include <rucksack/widget/box/base.hpp>
+#include <rucksack/widget/enumeration.hpp>
+#include <rucksack/widget/viewport_adaptor.hpp>
 #include <sge/image/color/rgba8.hpp>
 #include <sge/image/color/rgba8_format.hpp>
 #include <sge/image/colors.hpp>
@@ -27,7 +27,7 @@
 #include <sge/systems/list.hpp>
 #include <sge/systems/parameterless.hpp>
 #include <sge/systems/running_to_false.hpp>
-#include <sge/viewport/center_on_resize.hpp>
+#include <sge/viewport/fill_on_resize.hpp>
 #include <sge/window/instance.hpp>
 #include <fcppt/io/cerr.hpp>
 #include <fcppt/log/activate_levels.hpp>
@@ -35,12 +35,15 @@
 #include <fcppt/math/dim/structure_cast.hpp>
 #include <fcppt/math/dim/output.hpp>
 #include <fcppt/math/vector/output.hpp>
+#include <fcppt/make_unique_ptr.hpp>
+#include <fcppt/container/ptr/push_back_unique_ptr.hpp>
 #include <fcppt/signal/scoped_connection.hpp>
 #include <fcppt/exception.hpp>
 #include <fcppt/noncopyable.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <boost/mpl/vector/vector10.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <fcppt/config/external_end.hpp>
@@ -177,8 +180,7 @@ try
 					sge::renderer::depth_stencil_buffer::off,
 					sge::renderer::vsync::on,
 					sge::renderer::no_multi_sampling),
-				sge::viewport::center_on_resize(
-					window_dim)))
+				sge::viewport::fill_on_resize()))
 		(sge::systems::input(
 				sge::systems::input_helper_field(
 					sge::systems::input_helper::keyboard_collector),
@@ -187,123 +189,56 @@ try
 	sprite_system ss(
 		sys.renderer());
 
-	rucksack::widget::box::base outer_box(
-		rucksack::axis::x,
+	rucksack::widget::viewport_adaptor viewport_box(
+		sys.viewport_manager(),
+		sys.renderer());
+
+	rucksack::widget::enumeration enumeration_box(
+		rucksack::padding(
+			5),
 		rucksack::aspect(
 			1,
 			1));
 
-	rucksack::widget::box::base left_box(
-		rucksack::axis::y,
-		rucksack::aspect(
-			1,
-			1));
+	viewport_box.child(
+		enumeration_box);
 
-	outer_box.push_back_child(
-		left_box,
-		rucksack::alignment::left_or_top);
+	typedef
+	boost::ptr_vector<sprite_widget>
+	sprite_sequence;
 
-	rucksack::widget::box::base right_box(
-		rucksack::axis::y,
-		rucksack::aspect(
-			1,
-			1));
+	sprite_sequence sprites;
+	fcppt::container::ptr::push_back_unique_ptr(
+		sprites,
+		fcppt::make_unique_ptr<sprite_widget>(
+			sge::sprite::default_parameters<sprite_choices>()
+				.any_color(
+					sge::image::colors::red()),
+			rucksack::axis_policy2(
+				rucksack::axis_policy(
+					rucksack::minimum_size(
+						100),
+					rucksack::preferred_size(),
+					rucksack::is_expanding(
+						false)),
+				rucksack::axis_policy(
+					rucksack::minimum_size(
+						50),
+					rucksack::preferred_size(),
+					rucksack::is_expanding(
+						false)),
+				rucksack::aspect(
+					1,
+					1))));
 
-	outer_box.push_back_child(
-		right_box,
-		rucksack::alignment::center);
 
-	sprite_widget inner_sprite(
-		sge::sprite::default_parameters<sprite_choices>()
-			.any_color(
-				sge::image::colors::red()),
-		rucksack::axis_policy2(
-			rucksack::axis_policy(
-				rucksack::minimum_size(
-					100),
-				rucksack::preferred_size(),
-				rucksack::is_expanding(
-					false)),
-			rucksack::axis_policy(
-				rucksack::minimum_size(
-					50),
-				rucksack::preferred_size(),
-				rucksack::is_expanding(
-					false)),
-			rucksack::aspect(
-				1,
-				1)));
-
-	left_box.push_back_child(
-		inner_sprite,
-		rucksack::alignment::center);
-
-	sprite_widget inner_sprite2(
-		sge::sprite::default_parameters<sprite_choices>()
-			.any_color(
-				sge::image::colors::green()),
-		rucksack::axis_policy2(
-			rucksack::axis_policy(
-				rucksack::minimum_size(
-					200),
-				rucksack::preferred_size(),
-				rucksack::is_expanding(
-					false)),
-			rucksack::axis_policy(
-				rucksack::minimum_size(
-					50),
-				rucksack::preferred_size(),
-				rucksack::is_expanding(
-					false)),
-			rucksack::aspect(
-				1,
-				1)));
-
-	right_box.push_back_child(
-		inner_sprite2,
-		rucksack::alignment::right_or_bottom);
-
-	outer_box.position(
-		rucksack::vector(
-			0,
-			0));
-	outer_box.size(
-		rucksack::dim(
-			640,
-			480));
-	outer_box.relayout();
-
-	sprite_object outer_box_sprite(
-		sge::sprite::default_parameters<sprite_choices>()
-			.pos(
-				outer_box.position())
-			.size(
-				outer_box.size())
-			.any_color(
-				sge::image::colors::blue()).elements());
-
-	sprite_object left_box_sprite(
-		sge::sprite::default_parameters<sprite_choices>()
-			.pos(
-				left_box.position())
-			.size(
-				left_box.size())
-			.any_color(
-				sge::image::colors::cyan()).elements());
-
-	sprite_object right_box_sprite(
-		sge::sprite::default_parameters<sprite_choices>()
-			.pos(
-				right_box.position())
-			.size(
-				right_box.size())
-			.any_color(
-				sge::image::colors::magenta()).elements());
-
-	std::cout << "left box position: " << left_box.position() << ", size: " << left_box.size() << "\n";
-	std::cout << "right box position: " << right_box.position() << ", size: " << right_box.size() << "\n";
-	std::cout << "inner position: " << inner_sprite.position() << ", size: " << inner_sprite2.size() << "\n";
-	std::cout << "inner2 position: " << inner_sprite2.position() << ", size: " << inner_sprite2.size() << "\n";
+	for(
+		sprite_sequence::iterator it =
+			sprites.begin();
+		it != sprites.end();
+		++it)
+		enumeration_box.push_back_child(
+			*it);
 
 	bool running = true;
 
@@ -327,21 +262,27 @@ try
 		sge::renderer::scoped_block const block_(
 			sys.renderer());
 
+		sprite_object enumeration_box_sprite(
+			sge::sprite::default_parameters<sprite_choices>()
+				.pos(
+					enumeration_box.position())
+				.size(
+					enumeration_box.size())
+				.any_color(
+					sge::image::colors::blue()).elements());
+
 		sge::sprite::render_one(
 			ss,
-			outer_box_sprite);
-		sge::sprite::render_one(
-			ss,
-			left_box_sprite);
-		sge::sprite::render_one(
-			ss,
-			right_box_sprite);
-		sge::sprite::render_one(
-			ss,
-			inner_sprite.sprite());
-		sge::sprite::render_one(
-			ss,
-			inner_sprite2.sprite());
+			enumeration_box_sprite);
+
+		for(
+			sprite_sequence::iterator it =
+				sprites.begin();
+			it != sprites.end();
+			++it)
+			sge::sprite::render_one(
+				ss,
+				it->sprite());
 	}
 }
 catch(

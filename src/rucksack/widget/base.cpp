@@ -17,12 +17,6 @@ rucksack::widget::base::base(
 }
 
 void
-rucksack::widget::base::child_destroyed(
-	base &)
-{
-}
-
-void
 rucksack::widget::base::parent(
 	rucksack::widget::optional_parent const &_parent)
 {
@@ -33,4 +27,10 @@ rucksack::widget::optional_parent const &
 rucksack::widget::base::parent() const
 {
 	return parent_;
+}
+
+void
+rucksack::widget::base::child_destroyed(
+	base &)
+{
 }

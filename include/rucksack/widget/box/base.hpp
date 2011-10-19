@@ -11,7 +11,8 @@
 #include <rucksack/aspect.hpp>
 #include <fcppt/noncopyable.hpp>
 #include <fcppt/config/external_begin.hpp>
-#include <map>
+#include <utility>
+#include <list>
 #include <fcppt/config/external_end.hpp>
 
 namespace rucksack
@@ -94,10 +95,22 @@ public:
 		widget::base &,
 		rucksack::alignment::type);
 
+	RUCKSACK_SYMBOL void
+	push_front_child(
+		widget::base &,
+		rucksack::alignment::type);
+
+	RUCKSACK_SYMBOL void
+	pop_front_child();
+
+
 	RUCKSACK_SYMBOL ~base();
 private:
 	typedef
-	std::map<widget::base*,box::child_information>
+	std::list
+	<
+		std::pair<widget::base*,box::child_information>
+	>
 	child_information;
 
 	child_information children_;
@@ -128,6 +141,10 @@ private:
 	void
 	child_destroyed(
 		widget::base &);
+
+	box::child_information &
+	information_for_ptr(
+		widget::base const *);
 };
 }
 }

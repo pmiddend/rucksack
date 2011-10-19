@@ -28,7 +28,8 @@ rucksack::widget::viewport_adaptor::viewport_adaptor(
 			std::tr1::bind(
 				&viewport_adaptor::manage_callback,
 				this))),
-	child_()
+	child_(
+		0)
 {
 }
 FCPPT_PP_POP_WARNING
@@ -99,8 +100,26 @@ rucksack::widget::viewport_adaptor::relayout()
 		child_->relayout();
 }
 
+void
+rucksack::widget::viewport_adaptor::child(
+	widget::base &_child)
+{
+	if(child_)
+		child_->parent(
+			widget::optional_parent());
+
+	child_ = &_child;
+	child_->parent(
+		widget::optional_parent(
+			*this));
+}
+
+
 rucksack::widget::viewport_adaptor::~viewport_adaptor()
 {
+	if(child_)
+		child_->parent(
+			widget::optional_parent());
 }
 
 void
@@ -109,12 +128,14 @@ rucksack::widget::viewport_adaptor::manage_callback()
 	rucksack::dim const this_size =
 		this->size();
 
-	if(child_)
-	{
-		child_->size(
-			this_size);
-		child_->relayout();
-	}
+	if(!child_)
+		return;
+
+	child_->position(
+		rucksack::vector::null());
+	child_->size(
+		this_size);
+	child_->relayout();
 }
 
 void
