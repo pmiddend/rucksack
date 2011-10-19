@@ -69,7 +69,8 @@ SET(
 	include/rucksack/vector.hpp
 	include/rucksack/widget/base.hpp
 	include/rucksack/widget/base_fwd.hpp
-	include/rucksack/widget/box.hpp
+	include/rucksack/widget/box/base.hpp
+	include/rucksack/widget/box/child_information.hpp
 	include/rucksack/widget/optional_parent.hpp
 	include/rucksack/widget/viewport_adaptor.hpp
 	src/rucksack/alignment2.cpp
@@ -79,7 +80,8 @@ SET(
 	src/rucksack/size_policy2.cpp
 	src/rucksack/transient_layout_data.cpp
 	src/rucksack/widget/base.cpp
-	src/rucksack/widget/box.cpp
+	src/rucksack/widget/box/base.cpp
+	src/rucksack/widget/box/child_information.cpp
 	src/rucksack/widget/viewport_adaptor.cpp
 )
 

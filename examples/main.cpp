@@ -1,5 +1,5 @@
 #include <rucksack/widget/base.hpp>
-#include <rucksack/widget/box.hpp>
+#include <rucksack/widget/box/base.hpp>
 #include <sge/image/color/rgba8.hpp>
 #include <sge/image/color/rgba8_format.hpp>
 #include <sge/image/colors.hpp>
@@ -88,12 +88,11 @@ FCPPT_NONCOPYABLE(
 public:
 	explicit
 	sprite_widget(
-		rucksack::widget::optional_parent const &_parent,
 		sprite_parameters const &_parameters,
 		rucksack::axis_policy2 const &_axis_policy)
 	:
 		rucksack::widget::base(
-			_parent),
+			rucksack::widget::optional_parent()),
 		sprite_(
 			_parameters.elements()),
 		axis_policy_(
@@ -188,35 +187,33 @@ try
 	sprite_system ss(
 		sys.renderer());
 
-	rucksack::widget::box outer_box(
-		rucksack::widget::optional_parent(),
-		rucksack::alignment::center,
+	rucksack::widget::box::base outer_box(
 		rucksack::axis::x,
 		rucksack::aspect(
 			1,
 			1));
 
-	rucksack::widget::box left_box(
-		rucksack::widget::optional_parent(
-			outer_box),
-		rucksack::alignment::center,
+	rucksack::widget::box::base left_box(
 		rucksack::axis::y,
 		rucksack::aspect(
 			1,
 			1));
 
-	rucksack::widget::box right_box(
-		rucksack::widget::optional_parent(
-			outer_box),
-		rucksack::alignment::center,
+	outer_box.push_back_child(
+		left_box,
+		rucksack::alignment::left_or_top);
+
+	rucksack::widget::box::base right_box(
 		rucksack::axis::y,
 		rucksack::aspect(
 			1,
 			1));
+
+	outer_box.push_back_child(
+		right_box,
+		rucksack::alignment::center);
 
 	sprite_widget inner_sprite(
-		rucksack::widget::optional_parent(
-			left_box),
 		sge::sprite::default_parameters<sprite_choices>()
 			.any_color(
 				sge::image::colors::red()),
@@ -237,9 +234,11 @@ try
 				1,
 				1)));
 
+	left_box.push_back_child(
+		inner_sprite,
+		rucksack::alignment::center);
+
 	sprite_widget inner_sprite2(
-		rucksack::widget::optional_parent(
-			right_box),
 		sge::sprite::default_parameters<sprite_choices>()
 			.any_color(
 				sge::image::colors::green()),
@@ -259,6 +258,10 @@ try
 			rucksack::aspect(
 				1,
 				1)));
+
+	right_box.push_back_child(
+		inner_sprite2,
+		rucksack::alignment::right_or_bottom);
 
 	outer_box.position(
 		rucksack::vector(

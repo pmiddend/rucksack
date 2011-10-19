@@ -1,24 +1,20 @@
-#include <rucksack/widget/box.hpp>
+#include <rucksack/widget/box/base.hpp>
 #include <fcppt/io/clog.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/assert/pre.hpp>
+#include <fcppt/assert/unreachable.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <algorithm>
-#include <map>
 #include <vector>
 #include <fcppt/config/external_end.hpp>
-#include <fcppt/assert/unreachable.hpp>
 
-rucksack::widget::box::box(
-	widget::optional_parent const &_parent,
-	rucksack::alignment::type const &_alignment,
+rucksack::widget::box::base::base(
 	rucksack::axis::type const _axis,
 	rucksack::aspect const &_aspect)
 :
 	widget::base(
-		_parent),
-	alignment_(
-		_alignment),
+		widget::optional_parent()),
+	children_(),
 	axis_(
 		// For an explanation, see the header
 		static_cast<rucksack::dim::size_type>(
@@ -33,7 +29,7 @@ rucksack::widget::box::box(
 }
 
 void
-rucksack::widget::box::size(
+rucksack::widget::box::base::size(
 	rucksack::dim const &_size)
 {
 	size_ =
@@ -41,7 +37,7 @@ rucksack::widget::box::size(
 }
 
 void
-rucksack::widget::box::position(
+rucksack::widget::box::base::position(
 	rucksack::vector const &_position)
 {
 	position_ =
@@ -49,19 +45,19 @@ rucksack::widget::box::position(
 }
 
 rucksack::dim const
-rucksack::widget::box::size() const
+rucksack::widget::box::base::size() const
 {
 	return size_;
 }
 
 rucksack::vector const
-rucksack::widget::box::position() const
+rucksack::widget::box::base::position() const
 {
 	return position_;
 }
 
 rucksack::axis_policy2 const
-rucksack::widget::box::axis_policy() const
+rucksack::widget::box::base::axis_policy() const
 {
 	rucksack::scalar
 		minimum_size_minor =
@@ -82,14 +78,14 @@ rucksack::widget::box::axis_policy() const
 			false;
 
 	for(
-		base::child_list::const_iterator child =
+		child_information::const_iterator child_and_information_pair_it =
 			children_.begin();
-		child != children_.end();
-		++child)
+		child_and_information_pair_it != children_.end();
+		++child_and_information_pair_it)
 	{
 		// Less to type with these three variables :)
 		rucksack::axis_policy2 const this_axis_policy =
-			child->axis_policy();
+			child_and_information_pair_it->first->axis_policy();
 
 		rucksack::axis_policy const
 			minor_policy =
@@ -165,28 +161,24 @@ rucksack::widget::box::axis_policy() const
 }
 
 void
-rucksack::widget::box::relayout()
+rucksack::widget::box::base::relayout()
 {
 	if(children_.empty())
 		return;
 
-	transient_layout_data_map transient_data;
-
-	this->relayout_major_axis(
-		transient_data);
-	this->relayout_minor_axis(
-		transient_data);
+	this->relayout_major_axis();
+	this->relayout_minor_axis();
 
 	// Now that we have all the sizes, let's update the widgets and set a
 	// position, too.
 	// For the position, we first see how much space we have left in the widget
 	rucksack::scalar remaining = this->size()[this->major_axis()];
 	for(
-		transient_layout_data_map::const_iterator widget_ptr_data_pair_it =
-			transient_data.begin();
-		widget_ptr_data_pair_it != transient_data.end();
-		++widget_ptr_data_pair_it)
-		remaining -= widget_ptr_data_pair_it->second.size()[this->major_axis()];
+		child_information::const_iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
+		remaining -= widget_ptr_information_pair_it->second.size()[this->major_axis()];
 
 	// We have
 	//
@@ -195,7 +187,7 @@ rucksack::widget::box::relayout()
 	// holes between the widgets. We distribute the extra space in "remaining"
 	// uniformly to these holes.
 	rucksack::scalar const hole_size =
-			remaining / static_cast<rucksack::scalar>(transient_data.size()+1u);
+			remaining / static_cast<rucksack::scalar>(children_.size()+1u);
 
 	// This variable keeps track of the current "running" position on the major
 	// axis. Note that the rectangles have absolute positioning, so we have to
@@ -204,13 +196,13 @@ rucksack::widget::box::relayout()
 		this->position()[this->major_axis()] + hole_size;
 
 	for(
-		child_list::iterator child =
+		child_information::const_iterator widget_ptr_information_pair_it =
 			children_.begin();
-		child != children_.end();
-		++child)
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
 	{
-		child->size(
-			transient_data[&(*child)].size());
+		widget_ptr_information_pair_it->first->size(
+			widget_ptr_information_pair_it->second.size());
 
 		rucksack::vector new_position;
 		// This time, the major axis is easy: Just set it to the "current" position.
@@ -218,7 +210,7 @@ rucksack::widget::box::relayout()
 			current_major_position;
 
 		// The minor axis is determined by the alignment parameter.
-		switch(alignment_)
+		switch(widget_ptr_information_pair_it->second.alignment())
 		{
 			case alignment::left_or_top:
 				new_position[this->minor_axis()] =
@@ -229,41 +221,56 @@ rucksack::widget::box::relayout()
 				new_position[this->minor_axis()] =
 					this->position()[this->minor_axis()] +
 					this->size()[this->minor_axis()]/2 -
-					transient_data[&(*child)].size()[this->minor_axis()]/2;
+					widget_ptr_information_pair_it->second.size()[this->minor_axis()]/2;
 				break;
 			case alignment::right_or_bottom:
 				new_position[this->minor_axis()] =
 					// outer rectangle's right - widget's size => right alignment
 					this->position()[this->minor_axis()] +
 					this->size()[this->minor_axis()] -
-					transient_data[&(*child)].size()[this->minor_axis()];
+					widget_ptr_information_pair_it->second.size()[this->minor_axis()];
 				break;
 			case alignment::size:
 				FCPPT_ASSERT_UNREACHABLE
 				break;
 		}
 
-		child->position(
+		widget_ptr_information_pair_it->first->position(
 			new_position);
 
-		child->relayout();
+		widget_ptr_information_pair_it->first->relayout();
 
-		current_major_position += hole_size + transient_data[&(*child)].size()[this->major_axis()];
+		current_major_position +=
+			hole_size +
+			widget_ptr_information_pair_it->second.size()[this->major_axis()];
 	}
 }
 
-rucksack::widget::box::~box()
+void
+rucksack::widget::box::base::push_back_child(
+	widget::base &_new_child,
+	rucksack::alignment::type const _alignment)
+{
+	children_.insert(
+		std::make_pair(
+			&_new_child,
+			box::child_information(
+				_alignment,
+				rucksack::dim())));
+}
+
+rucksack::widget::box::base::~base()
 {
 }
 
 rucksack::dim::size_type
-rucksack::widget::box::major_axis() const
+rucksack::widget::box::base::major_axis() const
 {
 	return axis_;
 }
 
 rucksack::dim::size_type
-rucksack::widget::box::minor_axis() const
+rucksack::widget::box::base::minor_axis() const
 {
 	return
 		static_cast<rucksack::dim::size_type>(
@@ -271,8 +278,7 @@ rucksack::widget::box::minor_axis() const
 }
 
 void
-rucksack::widget::box::relayout_major_axis(
-	transient_layout_data_map &transient_data)
+rucksack::widget::box::base::relayout_major_axis()
 {
 	// First order of business: Assign each widget its minimum size on both axes.
 	// Also, keep track of how much we've assigned in total on the major axis.
@@ -282,27 +288,27 @@ rucksack::widget::box::relayout_major_axis(
 			0;
 
 	for(
-		child_list::iterator child = children_.begin(); child != children_.end(); ++child)
+		child_information::iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
 	{
-		transient_data[&(*child)] =
-			rucksack::transient_layout_data();
-
 		// FIXME: Recognize aspect here!
-		transient_data[&(*child)].size(
+		widget_ptr_information_pair_it->second.size(
 			rucksack::dim(
 				axis_ == 0
 				?
-					child->axis_policy()[this->major_axis()].minimum_size()
+					widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].minimum_size()
 				:
-					child->axis_policy()[this->minor_axis()].minimum_size(),
+					widget_ptr_information_pair_it->first->axis_policy()[this->minor_axis()].minimum_size(),
 				axis_ == 0
 				?
-					child->axis_policy()[this->minor_axis()].minimum_size()
+					widget_ptr_information_pair_it->first->axis_policy()[this->minor_axis()].minimum_size()
 				:
-					child->axis_policy()[this->major_axis()].minimum_size()));
+					widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].minimum_size()));
 
 		allocated_major_size +=
-			child->axis_policy()[this->major_axis()].minimum_size();
+			widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].minimum_size();
 	}
 
 	// How much space do we have remaining on the major axis?
@@ -332,15 +338,19 @@ rucksack::widget::box::relayout_major_axis(
 	// 2. How much more pixels are needed to push each widget to the preferred
 	//    size.
 	for(
-		child_list::iterator child = children_.begin(); child != children_.end(); ++child)
+		child_information::const_iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
 	{
 		// FIXME: Check if this widget has a preferered size and _CAN_ be resized
 		// considering its height and aspect
-		if(!child->axis_policy()[this->major_axis()].preferred_size())
+		if(!widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].preferred_size())
 			continue;
 
 		rucksack::scalar const size_difference =
-			(*child->axis_policy()[this->major_axis()].preferred_size()) - child->axis_policy()[this->major_axis()].minimum_size();
+			(*widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].preferred_size()) -
+			widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].minimum_size();
 
 		FCPPT_ASSERT_PRE(
 			size_difference >= 0);
@@ -349,7 +359,7 @@ rucksack::widget::box::relayout_major_axis(
 			continue;
 
 		widgets_with_preferred_size.push_back(
-			&(*child));
+			widget_ptr_information_pair_it->first);
 
 		additional_pixels +=
 			size_difference;
@@ -367,12 +377,12 @@ rucksack::widget::box::relayout_major_axis(
 				++child_ptr)
 			{
 				rucksack::dim current_size =
-					transient_data[*child_ptr].size();
+					children_[*child_ptr].size();
 
 				current_size[axis_] =
 					*((*child_ptr)->axis_policy()[this->major_axis()].preferred_size());
 
-				transient_data[*child_ptr].size(
+				children_[*child_ptr].size(
 					current_size);
 			}
 
@@ -391,7 +401,7 @@ rucksack::widget::box::relayout_major_axis(
 				++child_ptr)
 			{
 				rucksack::dim current_size =
-					transient_data[*child_ptr].size();
+					children_[*child_ptr].size();
 
 				rucksack::scalar const preferred_size =
 					*((*child_ptr)->axis_policy()[this->major_axis()].preferred_size());
@@ -405,7 +415,7 @@ rucksack::widget::box::relayout_major_axis(
 				remaining -=
 					current_size[axis_] - (*child_ptr)->axis_policy()[this->major_axis()].minimum_size();
 
-				transient_data[*child_ptr].size(
+				children_[*child_ptr].size(
 					current_size);
 			}
 		}
@@ -420,12 +430,15 @@ rucksack::widget::box::relayout_major_axis(
 	widget_ptr_container widgets_which_expand;
 
 	for(
-		child_list::iterator child = children_.begin(); child != children_.end(); ++child)
+		child_information::const_iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
 		// FIXME: Check if this widget has is expandable and _CAN_ be expanded
 		// considering its height and aspect
-		if(child->axis_policy()[this->major_axis()].is_expanding())
+		if(widget_ptr_information_pair_it->first->axis_policy()[this->major_axis()].is_expanding())
 			widgets_which_expand.push_back(
-				&(*child));
+				widget_ptr_information_pair_it->first);
 
 	if(!widgets_which_expand.empty())
 	{
@@ -436,20 +449,19 @@ rucksack::widget::box::relayout_major_axis(
 			++child_ptr)
 		{
 			rucksack::dim current_size =
-				transient_data[*child_ptr].size();
+				children_[*child_ptr].size();
 
 			current_size[axis_] +=
 				remaining / static_cast<rucksack::scalar>(widgets_which_expand.size());
 
-			transient_data[*child_ptr].size(
+			children_[*child_ptr].size(
 				current_size);
 		}
 	}
 }
 
 void
-rucksack::widget::box::relayout_minor_axis(
-	transient_layout_data_map &transient_data)
+rucksack::widget::box::base::relayout_minor_axis()
 {
 	// Layouting the minor axis is pretty simple:
 	// If the widget has a preferred size, take:
@@ -460,19 +472,19 @@ rucksack::widget::box::relayout_minor_axis(
 	//
 	// FIXME: ASPECT!
 	for(
-		transient_layout_data_map::iterator widget_ptr_data_pair_it =
-			transient_data.begin();
-		widget_ptr_data_pair_it != transient_data.end();
-		++widget_ptr_data_pair_it)
+		child_information::iterator widget_ptr_information_pair_it =
+			children_.begin();
+		widget_ptr_information_pair_it != children_.end();
+		++widget_ptr_information_pair_it)
 	{
 		rucksack::dim current_size =
-			widget_ptr_data_pair_it->second.size();
+			widget_ptr_information_pair_it->second.size();
 
 		bool const
 			is_expanding =
-				widget_ptr_data_pair_it->first->axis_policy()[this->minor_axis()].is_expanding(),
+				widget_ptr_information_pair_it->first->axis_policy()[this->minor_axis()].is_expanding(),
 			has_preferred_size =
-				widget_ptr_data_pair_it->first->axis_policy()[this->minor_axis()].preferred_size();
+				widget_ptr_information_pair_it->first->axis_policy()[this->minor_axis()].preferred_size();
 
 		if(is_expanding && !has_preferred_size)
 		{
@@ -484,10 +496,18 @@ rucksack::widget::box::relayout_minor_axis(
 			current_size[this->minor_axis()] =
 				std::min(
 					this->size()[this->minor_axis()],
-					*widget_ptr_data_pair_it->first->axis_policy()[this->minor_axis()].preferred_size());
+					*widget_ptr_information_pair_it->first->axis_policy()[this->minor_axis()].preferred_size());
 		}
 
-		widget_ptr_data_pair_it->second.size(
+		widget_ptr_information_pair_it->second.size(
 			current_size);
 	}
+}
+
+void
+rucksack::widget::box::base::child_destroyed(
+	widget::base &_child)
+{
+	children_.erase(
+		&_child);
 }

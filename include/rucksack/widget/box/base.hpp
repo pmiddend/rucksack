@@ -1,6 +1,7 @@
-#ifndef RUCKSACK_WIDGET_BOX_HPP_INCLUDED
-#define RUCKSACK_WIDGET_BOX_HPP_INCLUDED
+#ifndef RUCKSACK_WIDGET_BOX_BASE_HPP_INCLUDED
+#define RUCKSACK_WIDGET_BOX_BASE_HPP_INCLUDED
 
+#include <rucksack/widget/box/child_information.hpp>
 #include <rucksack/widget/optional_parent.hpp>
 #include <rucksack/widget/base.hpp>
 #include <rucksack/class_symbol.hpp>
@@ -18,23 +19,23 @@ namespace rucksack
 {
 namespace widget
 {
+namespace box
+{
 /**
  * The box class behaves just like the Qt box layout. It aligns its children
  * either vertically or horizontally (determined by the "axis" parameter which
  * specifies the "major axis" of alignment; hozirontal alignment has axis::x,
  * vertical has axis::y).
  */
-class RUCKSACK_CLASS_SYMBOL box
+class RUCKSACK_CLASS_SYMBOL base
 :
 	public widget::base
 {
 FCPPT_NONCOPYABLE(
-	box);
+	base);
 public:
 	RUCKSACK_SYMBOL explicit
-	box(
-		widget::optional_parent const &,
-		rucksack::alignment::type const &,
+	base(
 		rucksack::axis::type,
 		rucksack::aspect const &);
 
@@ -89,13 +90,18 @@ public:
 	RUCKSACK_SYMBOL void
 	relayout();
 
-	RUCKSACK_SYMBOL ~box();
+	RUCKSACK_SYMBOL void
+	push_back_child(
+		widget::base &,
+		rucksack::alignment::type);
+
+	RUCKSACK_SYMBOL ~base();
 private:
 	typedef
-	std::map<widget::base*,rucksack::transient_layout_data>
-	transient_layout_data_map;
+	std::map<widget::base*,box::child_information>
+	child_information;
 
-	rucksack::alignment::type const alignment_;
+	child_information children_;
 	// We use the axis_ to access the components of either a dim or a vector:
 	//
 	// v[axis_] = 10;
@@ -115,13 +121,16 @@ private:
 	minor_axis() const;
 
 	void
-	relayout_major_axis(
-		transient_layout_data_map &);
+	relayout_major_axis();
 
 	void
-	relayout_minor_axis(
-		transient_layout_data_map &);
+	relayout_minor_axis();
+
+	void
+	child_destroyed(
+		widget::base &);
 };
+}
 }
 }
 

@@ -52,24 +52,23 @@ public:
 	RUCKSACK_SYMBOL
 	virtual ~base() = 0;
 protected:
-	typedef
-	boost::intrusive::list
-	<
-		base,
-		boost::intrusive::constant_time_size<false>
-	>
-	child_list;
-
-	child_list children_;
-
 	RUCKSACK_SYMBOL
 	explicit
 	base(
-		widget::optional_parent const &);
-private:
-	void
-	push_back_child(
+		rucksack::widget::optional_parent const &);
+
+	RUCKSACK_SYMBOL virtual void
+	child_destroyed(
 		base &);
+private:
+	rucksack::widget::optional_parent parent_;
+
+	void
+	parent(
+		rucksack::widget::optional_parent const &);
+
+	rucksack::widget::optional_parent const &
+	parent() const;
 };
 }
 }

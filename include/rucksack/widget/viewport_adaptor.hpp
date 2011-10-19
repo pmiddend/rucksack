@@ -15,9 +15,9 @@ namespace rucksack
 namespace widget
 {
 /**
- * The viewport adaptor is supposed to have just one single child. It
- * synchronizes the size and position of this child with the given viewport. So
- * in a hierarchy, this manager is supposed to be near the top.
+ * The viewport adaptor has juts one single child. It synchronizes the size and
+ * position of this child with the given viewport. So in a hierarchy, this
+ * manager is supposed to be near the top.
  *
  * The operations size(...) and position(...) resize and reposition the
  * viewport.
@@ -38,7 +38,6 @@ public:
 	// directly.
 	RUCKSACK_SYMBOL explicit
 	viewport_adaptor(
-		widget::optional_parent const &,
 		sge::viewport::manager &,
 		sge::renderer::device &);
 
@@ -62,13 +61,22 @@ public:
 	RUCKSACK_SYMBOL void
 	relayout();
 
+	RUCKSACK_SYMBOL void
+	child(
+		widget::base &);
+
 	RUCKSACK_SYMBOL ~viewport_adaptor();
 private:
 	sge::renderer::device &renderer_;
 	fcppt::signal::scoped_connection viewport_connection_;
+	widget::base *child_;
 
 	void
 	manage_callback();
+
+	void
+	child_destroyed(
+		widget::base &);
 };
 }
 }

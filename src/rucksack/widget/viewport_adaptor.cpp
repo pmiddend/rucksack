@@ -10,26 +10,25 @@
 #include <fcppt/preprocessor/disable_vc_warning.hpp>
 #include <fcppt/preprocessor/pop_warning.hpp>
 #include <fcppt/preprocessor/push_warning.hpp>
-#include <fcppt/config/external_begin.hpp>
 #include <fcppt/tr1/functional.hpp>
-#include <fcppt/config/external_end.hpp>
+#include <fcppt/assert/pre.hpp>
 
 FCPPT_PP_PUSH_WARNING
 FCPPT_PP_DISABLE_VC_WARNING(4355)
 rucksack::widget::viewport_adaptor::viewport_adaptor(
-	widget::optional_parent const &_parent,
 	sge::viewport::manager &_viewport,
 	sge::renderer::device &_renderer)
 :
 	widget::base(
-		_parent),
+		widget::optional_parent()),
 	renderer_(
 		_renderer),
 	viewport_connection_(
 		_viewport.manage_callback(
 			std::tr1::bind(
 				&viewport_adaptor::manage_callback,
-				this)))
+				this))),
+	child_()
 {
 }
 FCPPT_PP_POP_WARNING
@@ -96,9 +95,8 @@ rucksack::widget::viewport_adaptor::axis_policy() const
 void
 rucksack::widget::viewport_adaptor::relayout()
 {
-	// A dummy for now, until there's a use case
-	for(base::child_list::iterator it = children_.begin(); it != children_.end(); ++it)
-		it->relayout();
+	if(child_)
+		child_->relayout();
 }
 
 rucksack::widget::viewport_adaptor::~viewport_adaptor()
@@ -108,13 +106,24 @@ rucksack::widget::viewport_adaptor::~viewport_adaptor()
 void
 rucksack::widget::viewport_adaptor::manage_callback()
 {
-	rucksack::dim const this_size = 
+	rucksack::dim const this_size =
 		this->size();
 
-	for(base::child_list::iterator it = children_.begin(); it != children_.end(); ++it)
+	if(child_)
 	{
-		it->size(
+		child_->size(
 			this_size);
-		it->relayout();
+		child_->relayout();
 	}
+}
+
+void
+rucksack::widget::viewport_adaptor::child_destroyed(
+	widget::base &_child)
+{
+	FCPPT_ASSERT_PRE(
+		&_child == child_);
+
+	child_ =
+		0;
 }
