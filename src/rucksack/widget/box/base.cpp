@@ -231,7 +231,7 @@ rucksack::widget::box::base::relayout()
 					widget_ptr_information_pair_it->second.size()[this->minor_axis()];
 				break;
 			case alignment::size:
-				FCPPT_ASSERT_UNREACHABLE
+				FCPPT_ASSERT_UNREACHABLE;
 				break;
 		}
 
@@ -558,7 +558,7 @@ rucksack::widget::box::base::child_destroyed(
 		}
 	}
 
-	FCPPT_ASSERT_UNREACHABLE
+	FCPPT_ASSERT_UNREACHABLE;
 }
 
 rucksack::widget::box::child_information &
@@ -575,5 +575,5 @@ rucksack::widget::box::base::information_for_ptr(
 			return widget_ptr_information_pair_it->second;
 	}
 
-	FCPPT_ASSERT_UNREACHABLE
+	FCPPT_ASSERT_UNREACHABLE;
 }
