@@ -43,7 +43,7 @@ find_package(
 )
 
 find_package(
-	SGE ${RUCKSACK_FIND_OPTIONS} 
+	SGE ${RUCKSACK_FIND_OPTIONS}
 	COMPONENTS
 	renderer
 	image
@@ -59,7 +59,7 @@ unset(
 
 find_path(
 	Rucksack_INCLUDE_DIR
-	NAMES rucksack/config.hpp
+	NAMES rucksack/scalar.hpp
 	HINTS ${RUCKSACK_INCLUDEDIR}
 )
 
