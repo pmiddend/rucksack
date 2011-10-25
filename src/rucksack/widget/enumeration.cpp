@@ -122,6 +122,8 @@ rucksack::widget::enumeration::relayout()
 		(*child_ptr)->size(
 			preferred_or_minimum);
 
+		(*child_ptr)->relayout();
+
 		current_pos.x() +=
 			preferred_or_minimum.w() + padding_;
 
