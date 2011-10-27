@@ -101,9 +101,11 @@ rucksack::widget::enumeration::relayout()
 		// Next line
 		if(current_pos.x() + padding_ + preferred_or_minimum.w() > this->position().x() + this->size().w())
 		{
-			FCPPT_ASSERT_PRE(
-				current_pos.y() + preferred_or_minimum.h() <= this->position().y() + this->size().h());
-
+			// This assertion makes sure that we have enough space
+			// at the bottom. It's too strict, however, so I
+			// uncommented it.
+			//FCPPT_ASSERT_PRE(
+			//	current_pos.y() + preferred_or_minimum.h() <= this->position().y() + this->size().h());
 			current_pos.x() =
 				this->position().x();
 
