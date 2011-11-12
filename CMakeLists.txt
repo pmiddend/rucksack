@@ -57,7 +57,6 @@ SET(
 	include/rucksack/dim.hpp
 	include/rucksack/is_expanding.hpp
 	include/rucksack/minimum_size.hpp
-	include/rucksack/optional_dim.hpp
 	include/rucksack/optional_scalar.hpp
 	include/rucksack/padding.hpp
 	include/rucksack/preferred_size.hpp
