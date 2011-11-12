@@ -4,6 +4,7 @@
 #include <rucksack/dim.hpp>
 #include <rucksack/vector.hpp>
 #include <rucksack/widget/base.hpp>
+#include <fcppt/noncopyable.hpp>
 #include <fcppt/math/dim/basic_impl.hpp>
 #include <fcppt/math/vector/basic_impl.hpp>
 
@@ -15,6 +16,8 @@ class dummy
 :
 	public widget::base
 {
+FCPPT_NONCOPYABLE(
+	dummy);
 public:
 	RUCKSACK_SYMBOL explicit
 	dummy(
