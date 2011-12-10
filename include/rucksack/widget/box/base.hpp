@@ -22,11 +22,13 @@ namespace widget
 namespace box
 {
 /**
- * The box class behaves just like the Qt box layout. It aligns its children
- * either vertically or horizontally (determined by the "axis" parameter which
- * specifies the "major axis" of alignment; hozirontal alignment has axis::x,
- * vertical has axis::y).
- */
+\brief Align child widgets next to each other in a box.
+\details
+The box class behaves just like the Qt box layout. It aligns its children
+either vertically or horizontally (determined by the "axis" parameter which
+specifies the "major axis" of alignment; hozirontal alignment has axis::x,
+vertical has axis::y).
+*/
 class RUCKSACK_CLASS_SYMBOL base
 :
 	public widget::base

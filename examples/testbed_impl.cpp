@@ -81,7 +81,7 @@ rucksack::examples::testbed_impl::add_widget(
 			sprite_object(
 				sprite_parameters()
 					.any_color(
-						_color).elements())));
+						_color))));
 }
 
 void
