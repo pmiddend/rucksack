@@ -22,6 +22,7 @@
 #include <sge/sprite/with_color.hpp>
 #include <sge/sprite/with_dim.hpp>
 #include <sge/systems/instance.hpp>
+#include <sge/window/title.hpp>
 
 namespace rucksack
 {
@@ -34,7 +35,7 @@ FCPPT_NONCOPYABLE(
 public:
 	explicit
 	testbed_impl(
-		fcppt::string const &);
+		sge::window::title const &);
 
 	void
 	add_widget(

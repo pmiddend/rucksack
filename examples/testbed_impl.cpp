@@ -8,7 +8,7 @@
 #include <sge/renderer/no_multi_sampling.hpp>
 #include <sge/renderer/parameters.hpp>
 #include <sge/renderer/scoped_block.hpp>
-#include <sge/window/instance.hpp>
+#include <sge/window/system.hpp>
 #include <sge/renderer/state/color.hpp>
 #include <sge/renderer/state/list.hpp>
 #include <sge/renderer/state/scoped.hpp>
@@ -26,19 +26,19 @@
 #include <sge/systems/running_to_false.hpp>
 #include <sge/systems/window.hpp>
 #include <sge/viewport/fill_on_resize.hpp>
-#include <sge/window/simple_parameters.hpp>
+#include <sge/window/parameters.hpp>
 #include <fcppt/container/bitfield/basic_impl.hpp>
 #include <fcppt/log/activate_levels.hpp>
 #include <fcppt/log/level.hpp>
 #include <fcppt/text.hpp>
 
 rucksack::examples::testbed_impl::testbed_impl(
-	fcppt::string const &_window_title)
+	sge::window::title const &_window_title)
 :
 	systems_(
 		sge::systems::list()
 		(sge::systems::window(
-				sge::window::simple_parameters(
+				sge::window::parameters(
 					_window_title,
 					sge::window::dim(
 						1024,
@@ -89,7 +89,7 @@ rucksack::examples::testbed_impl::run()
 {
 	while(running_)
 	{
-		systems_.window().dispatch();
+		systems_.window_system().poll();
 
 		this->update();
 

@@ -3,7 +3,7 @@
 #include <fcppt/make_unique_ptr.hpp>
 
 rucksack::examples::testbed::testbed(
-	fcppt::string const &_str)
+	sge::window::title const &_str)
 :
 	impl_(
 		fcppt::make_unique_ptr<examples::testbed_impl>(

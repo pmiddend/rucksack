@@ -15,7 +15,8 @@ int main()
 try
 {
 	rucksack::examples::testbed testbed_(
-		FCPPT_TEXT("rucksack box test"));
+		sge::window::title(
+			FCPPT_TEXT("rucksack box test")));
 
 	rucksack::widget::viewport_adaptor viewport_box(
 		testbed_.systems().viewport_manager(),

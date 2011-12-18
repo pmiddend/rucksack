@@ -5,7 +5,7 @@
 #include <rucksack/widget/base_fwd.hpp>
 #include <sge/image/color/any/object_fwd.hpp>
 #include <sge/systems/instance_fwd.hpp>
-#include <fcppt/string.hpp>
+#include <sge/window/title.hpp>
 #include <fcppt/scoped_ptr.hpp>
 #include <fcppt/noncopyable.hpp>
 
@@ -20,7 +20,7 @@ FCPPT_NONCOPYABLE(
 public:
 	explicit
 	testbed(
-		fcppt::string const &);
+		sge::window::title const &);
 
 	void
 	add_widget(
