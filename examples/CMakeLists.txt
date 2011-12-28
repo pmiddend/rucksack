@@ -18,7 +18,8 @@ FUNCTION(
 		rucksack_testbed
 		${ADDITIONAL_LIBRARIES}
 		${SGE_LIBRARIES}
-		${Fcppt_LIBRARIES})
+		${Fcppt_core_LIBRARIES}
+		${Fcppt_filesystem_LIBRARIES})
 
 	INSTALL(
 		TARGETS

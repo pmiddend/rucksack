@@ -93,7 +93,7 @@ ADD_LIBRARY(
 TARGET_LINK_LIBRARIES(
 	rucksack
 	${SGE_LIBRARIES}
-	${Fcppt_LIBRARIES})
+	${Fcppt_core_LIBRARIES})
 
 ADD_SUBDIRECTORY(
 	examples)
