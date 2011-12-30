@@ -25,6 +25,7 @@ FIND_PACKAGE(
 	renderer
 	image
 	input
+	log
 	viewport
 	window
 	sprite
