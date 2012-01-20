@@ -11,18 +11,12 @@
 #include <sge/renderer/parameters.hpp>
 #include <sge/renderer/scoped_block.hpp>
 #include <sge/window/system.hpp>
-/*
-#include <sge/renderer/state/color.hpp>
-#include <sge/renderer/state/list.hpp>
-#include <sge/renderer/state/scoped.hpp>
-#include <sge/renderer/state/bool.hpp>
-*/
 #include <sge/sprite/config/unit_type.hpp>
 #include <sge/sprite/config/float_type.hpp>
 #include <sge/renderer/visual_depth.hpp>
 #include <sge/log/global.hpp>
 #include <sge/renderer/vsync.hpp>
-#include <sge/sprite/dont_compare.hpp>
+#include <sge/sprite/compare/nothing.hpp>
 #include <sge/systems/cursor_option_field.hpp>
 #include <sge/systems/input.hpp>
 #include <sge/systems/input_helper.hpp>
@@ -153,7 +147,7 @@ rucksack::examples::testbed_impl::render()
 			raw_sprites.begin(),
 			raw_sprites.end()),
 		sprite_system_.buffers(),
-		sge::sprite::dont_compare());
+		sge::sprite::compare::nothing());
 }
 
 sge::systems::instance const &
