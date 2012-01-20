@@ -1,19 +1,20 @@
 #ifndef RUCKSACK_WIDGET_BOX_BASE_HPP_INCLUDED
 #define RUCKSACK_WIDGET_BOX_BASE_HPP_INCLUDED
 
-#include <rucksack/widget/box/child_information.hpp>
-#include <rucksack/widget/optional_parent.hpp>
-#include <rucksack/widget/base.hpp>
+#include <rucksack/alignment.hpp>
+#include <rucksack/aspect.hpp>
+#include <rucksack/axis.hpp>
 #include <rucksack/class_symbol.hpp>
 #include <rucksack/symbol.hpp>
-#include <rucksack/alignment.hpp>
-#include <rucksack/axis.hpp>
-#include <rucksack/aspect.hpp>
+#include <rucksack/widget/base.hpp>
+#include <rucksack/widget/optional_parent.hpp>
+#include <rucksack/widget/box/child_information.hpp>
 #include <fcppt/noncopyable.hpp>
 #include <fcppt/config/external_begin.hpp>
-#include <utility>
 #include <list>
+#include <utility>
 #include <fcppt/config/external_end.hpp>
+
 
 namespace rucksack
 {

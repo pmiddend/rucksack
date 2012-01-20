@@ -20,5 +20,4 @@ function update_cmake_file()
 update_cmake_file \
 	CMakeLists.txt \
 	RUCKSACK_FILES \
-	include/rucksack \
 	src/rucksack \

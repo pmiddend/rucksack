@@ -1,11 +1,12 @@
 #ifndef RUCKSACK_AXIS_POLICY2_HPP_INCLUDED
 #define RUCKSACK_AXIS_POLICY2_HPP_INCLUDED
 
+#include <rucksack/aspect.hpp>
 #include <rucksack/axis_policy.hpp>
 #include <rucksack/dim.hpp>
 #include <rucksack/symbol.hpp>
-#include <rucksack/aspect.hpp>
 #include <fcppt/math/dim/basic_impl.hpp>
+
 
 namespace rucksack
 {

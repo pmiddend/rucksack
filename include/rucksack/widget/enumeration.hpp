@@ -1,15 +1,16 @@
 #ifndef RUCKSACK_WIDGET_ENUMERATION_HPP_INCLUDED
 #define RUCKSACK_WIDGET_ENUMERATION_HPP_INCLUDED
 
-#include <rucksack/widget/base.hpp>
-#include <rucksack/padding.hpp>
 #include <rucksack/aspect.hpp>
+#include <rucksack/padding.hpp>
+#include <rucksack/widget/base.hpp>
 #include <fcppt/noncopyable.hpp>
 #include <fcppt/math/dim/basic_impl.hpp>
 #include <fcppt/math/vector/basic_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <vector>
 #include <fcppt/config/external_end.hpp>
+
 
 namespace rucksack
 {

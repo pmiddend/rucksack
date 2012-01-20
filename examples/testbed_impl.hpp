@@ -13,14 +13,13 @@
 #include <fcppt/config/external_end.hpp>
 #include <sge/image/color/any/object_fwd.hpp>
 #include <sge/image/color/rgba8_format.hpp>
-#include <sge/sprite/choices.hpp>
+#include <sge/sprite/config/choices.hpp>
 #include <sge/sprite/object.hpp>
 #include <sge/sprite/parameters.hpp>
 #include <sge/sprite/system.hpp>
-#include <sge/sprite/external_system_impl.hpp>
-#include <sge/sprite/type_choices.hpp>
-#include <sge/sprite/with_color.hpp>
-#include <sge/sprite/with_dim.hpp>
+#include <sge/sprite/config/type_choices.hpp>
+#include <sge/sprite/config/with_color.hpp>
+#include <sge/sprite/config/normal_size.hpp>
 #include <sge/systems/instance.hpp>
 #include <sge/window/title.hpp>
 
@@ -57,24 +56,23 @@ public:
 	~testbed_impl();
 private:
 	typedef
-	sge::sprite::choices
+	sge::sprite::config::choices
 	<
-		sge::sprite::type_choices
+		sge::sprite::config::type_choices
 		<
-			rucksack::scalar,
-			float,
-			sge::image::color::rgba8_format
+			sge::sprite::config::unit_type<rucksack::scalar>,
+			sge::sprite::config::float_type<float>
 		>,
-		boost::mpl::vector2
+		sge::sprite::config::normal_size,
+		boost::mpl::vector1
 		<
-			sge::sprite::with_dim,
-			sge::sprite::with_color
+			sge::sprite::config::with_color<sge::image::color::rgba8_format>
 		>
 	>
 	sprite_choices;
 
 	typedef
-	sge::sprite::system<sprite_choices>::type
+	sge::sprite::system<sprite_choices>
 	sprite_system;
 
 	typedef

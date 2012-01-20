@@ -1,17 +1,18 @@
 #include <rucksack/widget/viewport_adaptor.hpp>
-#include <sge/renderer/onscreen_target.hpp>
 #include <sge/renderer/device.hpp>
+#include <sge/renderer/onscreen_target.hpp>
 #include <sge/viewport/manager.hpp>
 #include <fcppt/exception.hpp>
 #include <fcppt/text.hpp>
+#include <fcppt/assert/pre.hpp>
+#include <fcppt/math/box/basic_impl.hpp>
 #include <fcppt/math/dim/structure_cast.hpp>
 #include <fcppt/math/vector/structure_cast.hpp>
-#include <fcppt/math/box/basic_impl.hpp>
 #include <fcppt/preprocessor/disable_vc_warning.hpp>
 #include <fcppt/preprocessor/pop_warning.hpp>
 #include <fcppt/preprocessor/push_warning.hpp>
 #include <fcppt/tr1/functional.hpp>
-#include <fcppt/assert/pre.hpp>
+
 
 FCPPT_PP_PUSH_WARNING
 FCPPT_PP_DISABLE_VC_WARNING(4355)
@@ -78,7 +79,7 @@ rucksack::axis_policy2 const
 rucksack::widget::viewport_adaptor::axis_policy() const
 {
 	// A dummy for now, until there's a use case
-	return 
+	return
 		rucksack::axis_policy2(
 			rucksack::axis_policy(
 				rucksack::minimum_size(),

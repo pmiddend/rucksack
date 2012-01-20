@@ -1,16 +1,17 @@
 #ifndef RUCKSACK_WIDGET_MASTER_AND_SLAVES_HPP_INCLUDED
 #define RUCKSACK_WIDGET_MASTER_AND_SLAVES_HPP_INCLUDED
 
+#include <rucksack/padding.hpp>
 #include <rucksack/widget/base.hpp>
 #include <rucksack/widget/enumeration.hpp>
 #include <rucksack/widget/box/base.hpp>
-#include <rucksack/padding.hpp>
 #include <fcppt/noncopyable.hpp>
 #include <fcppt/math/dim/basic_impl.hpp>
 #include <fcppt/math/vector/basic_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <vector>
 #include <fcppt/config/external_end.hpp>
+
 
 namespace rucksack
 {

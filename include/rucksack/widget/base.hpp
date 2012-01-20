@@ -1,18 +1,19 @@
 #ifndef RUCKSACK_WIDGET_BASE_HPP_INCLUDED
 #define RUCKSACK_WIDGET_BASE_HPP_INCLUDED
 
-#include <rucksack/widget/optional_parent.hpp>
-#include <rucksack/vector.hpp>
-#include <rucksack/class_symbol.hpp>
-#include <rucksack/symbol.hpp>
 #include <rucksack/axis_policy2.hpp>
+#include <rucksack/class_symbol.hpp>
 #include <rucksack/dim.hpp>
-#include <fcppt/math/vector/basic_impl.hpp>
-#include <fcppt/math/dim/basic_impl.hpp>
+#include <rucksack/symbol.hpp>
+#include <rucksack/vector.hpp>
+#include <rucksack/widget/optional_parent.hpp>
 #include <fcppt/noncopyable.hpp>
+#include <fcppt/math/dim/basic_impl.hpp>
+#include <fcppt/math/vector/basic_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <boost/intrusive/list.hpp>
 #include <fcppt/config/external_end.hpp>
+
 
 namespace rucksack
 {

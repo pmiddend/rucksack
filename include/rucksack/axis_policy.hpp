@@ -1,11 +1,12 @@
 #ifndef RUCKSACK_AXIS_POLICY_HPP_INCLUDED
 #define RUCKSACK_AXIS_POLICY_HPP_INCLUDED
 
+#include <rucksack/is_expanding.hpp>
 #include <rucksack/minimum_size.hpp>
 #include <rucksack/preferred_size.hpp>
-#include <rucksack/is_expanding.hpp>
 #include <rucksack/symbol.hpp>
 #include <fcppt/optional_impl.hpp>
+
 
 namespace rucksack
 {

@@ -1,14 +1,15 @@
 #ifndef RUCKSACK_VIEWPORT_ADAPTOR_HPP_INCLUDED
 #define RUCKSACK_VIEWPORT_ADAPTOR_HPP_INCLUDED
 
-#include <rucksack/widget/base.hpp>
 #include <rucksack/class_symbol.hpp>
 #include <rucksack/symbol.hpp>
+#include <rucksack/widget/base.hpp>
 #include <rucksack/widget/optional_parent.hpp>
-#include <sge/viewport/manager_fwd.hpp>
 #include <sge/renderer/device_fwd.hpp>
+#include <sge/viewport/manager_fwd.hpp>
 #include <fcppt/noncopyable.hpp>
 #include <fcppt/signal/scoped_connection.hpp>
+
 
 namespace rucksack
 {

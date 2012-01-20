@@ -1,12 +1,13 @@
 #include <rucksack/widget/box/base.hpp>
-#include <fcppt/io/clog.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/assert/pre.hpp>
 #include <fcppt/assert/unreachable.hpp>
+#include <fcppt/io/clog.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <algorithm>
 #include <vector>
 #include <fcppt/config/external_end.hpp>
+
 
 rucksack::widget::box::base::base(
 	rucksack::axis::type const _axis,

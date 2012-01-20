@@ -48,31 +48,6 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
 SET(
 	RUCKSACK_FILES
-	include/rucksack/alignment.hpp
-	include/rucksack/alignment2.hpp
-	include/rucksack/aspect.hpp
-	include/rucksack/axis.hpp
-	include/rucksack/axis_policy.hpp
-	include/rucksack/axis_policy2.hpp
-	include/rucksack/class_symbol.hpp
-	include/rucksack/dim.hpp
-	include/rucksack/is_expanding.hpp
-	include/rucksack/minimum_size.hpp
-	include/rucksack/optional_scalar.hpp
-	include/rucksack/padding.hpp
-	include/rucksack/preferred_size.hpp
-	include/rucksack/scalar.hpp
-	include/rucksack/symbol.hpp
-	include/rucksack/vector.hpp
-	include/rucksack/widget/base.hpp
-	include/rucksack/widget/base_fwd.hpp
-	include/rucksack/widget/box/base.hpp
-	include/rucksack/widget/box/child_information.hpp
-	include/rucksack/widget/dummy.hpp
-	include/rucksack/widget/enumeration.hpp
-	include/rucksack/widget/master_and_slaves.hpp
-	include/rucksack/widget/optional_parent.hpp
-	include/rucksack/widget/viewport_adaptor.hpp
 	src/rucksack/alignment2.cpp
 	src/rucksack/aspect.cpp
 	src/rucksack/axis_policy.cpp

@@ -1,8 +1,9 @@
 #include <rucksack/widget/enumeration.hpp>
+#include <fcppt/assert/pre.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <algorithm>
 #include <fcppt/config/external_end.hpp>
-#include <fcppt/assert/pre.hpp>
+
 
 rucksack::widget::enumeration::enumeration(
 	rucksack::padding const &_padding,

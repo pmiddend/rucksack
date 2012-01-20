@@ -1,6 +1,7 @@
 #include <rucksack/widget/master_and_slaves.hpp>
-#include <fcppt/io/clog.hpp>
 #include <fcppt/text.hpp>
+#include <fcppt/io/clog.hpp>
+
 
 rucksack::widget::master_and_slaves::master_and_slaves(
 	rucksack::padding const &_padding)
