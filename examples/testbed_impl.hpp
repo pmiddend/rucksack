@@ -16,7 +16,8 @@
 #include <sge/sprite/config/choices.hpp>
 #include <sge/sprite/object.hpp>
 #include <sge/sprite/parameters.hpp>
-#include <sge/sprite/system.hpp>
+#include <sge/sprite/buffers/with_declaration.hpp>
+#include <sge/sprite/buffers/single.hpp>
 #include <sge/sprite/config/type_choices.hpp>
 #include <sge/sprite/config/with_color.hpp>
 #include <sge/sprite/config/normal_size.hpp>
@@ -72,8 +73,11 @@ private:
 	sprite_choices;
 
 	typedef
-	sge::sprite::system<sprite_choices>
-	sprite_system;
+	sge::sprite::buffers::with_declaration
+	<
+		sge::sprite::buffers::single<sprite_choices>
+	>
+	sprite_buffers;
 
 	typedef
 	sge::sprite::object<sprite_choices>
@@ -91,7 +95,7 @@ private:
 	sprite_list;
 
 	sge::systems::instance systems_;
-	sprite_system sprite_system_;
+	sprite_buffers buffers_;
 	sprite_list sprites_;
 	fcppt::signal::scoped_connection quit_connection_;
 	bool running_;

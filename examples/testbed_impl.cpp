@@ -1,5 +1,5 @@
 #include <sge/sprite/geometry/make_random_access_range.hpp>
-#include <sge/sprite/render/all.hpp>
+#include <sge/sprite/process/all.hpp>
 #include "testbed_impl.hpp"
 #include <rucksack/widget/base.hpp>
 #include <sge/image/colors.hpp>
@@ -16,7 +16,7 @@
 #include <sge/renderer/visual_depth.hpp>
 #include <sge/log/global.hpp>
 #include <sge/renderer/vsync.hpp>
-#include <sge/sprite/compare/nothing.hpp>
+#include <sge/sprite/compare/default.hpp>
 #include <sge/systems/cursor_option_field.hpp>
 #include <sge/systems/input.hpp>
 #include <sge/systems/input_helper.hpp>
@@ -54,9 +54,9 @@ rucksack::examples::testbed_impl::testbed_impl(
 				sge::systems::input_helper_field(
 					sge::systems::input_helper::keyboard_collector),
 				sge::systems::cursor_option_field::null()))),
-	sprite_system_(
+	buffers_(
 		systems_.renderer(),
-		sge::sprite::buffers_option::dynamic),
+		sge::sprite::buffers::option::dynamic),
 	quit_connection_(
 		systems_.keyboard_collector().key_callback(
 			sge::input::keyboard::action(
@@ -142,12 +142,12 @@ rucksack::examples::testbed_impl::render()
 		raw_sprites.push_back(
 			it->second);
 
-	sge::sprite::render::all(
+	sge::sprite::process::all(
 		sge::sprite::geometry::make_random_access_range(
 			raw_sprites.begin(),
 			raw_sprites.end()),
-		sprite_system_.buffers(),
-		sge::sprite::compare::nothing());
+		buffers_,
+		sge::sprite::compare::default_());
 }
 
 sge::systems::instance const &
