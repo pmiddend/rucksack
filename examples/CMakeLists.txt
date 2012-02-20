@@ -1,3 +1,6 @@
+include(
+	AwlMainGenerator)
+
 ADD_LIBRARY(
 	rucksack_testbed STATIC testbed.cpp testbed_impl.cpp)
 
@@ -10,13 +13,17 @@ FUNCTION(
 
 	SET(FULL_NAME rucksack${FULL_NAME}example)
 
-	ADD_EXECUTABLE(${FULL_NAME} ${EXAMPLE_NAME}.cpp)
+	awl_utils_add_portable_executable(
+		${FULL_NAME}
+		"rucksack::examples::main"
+		${EXAMPLE_NAME}.cpp)
 
 	TARGET_LINK_LIBRARIES (
 		${FULL_NAME}
 		rucksack
 		rucksack_testbed
 		${ADDITIONAL_LIBRARIES}
+		${Awl_LIBRARIES}
 		${SGE_LIBRARIES}
 		${Fcppt_core_LIBRARIES}
 		${Fcppt_filesystem_LIBRARIES})

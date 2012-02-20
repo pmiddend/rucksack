@@ -6,6 +6,7 @@
 #include <fcppt/signal/scoped_connection.hpp>
 #include <fcppt/string.hpp>
 #include <fcppt/noncopyable.hpp>
+#include <awl/main/exit_code.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <vector>
 #include <utility>
@@ -42,7 +43,7 @@ public:
 		widget::base &,
 		sge::image::color::any::object const &);
 
-	void
+	awl::main::exit_code const
 	run();
 
 	void
@@ -94,11 +95,10 @@ private:
 	>
 	sprite_list;
 
-	sge::systems::instance systems_;
+	sge::systems::instance const systems_;
 	sprite_buffers buffers_;
 	sprite_list sprites_;
-	fcppt::signal::scoped_connection quit_connection_;
-	bool running_;
+	fcppt::signal::scoped_connection const quit_connection_;
 };
 }
 }

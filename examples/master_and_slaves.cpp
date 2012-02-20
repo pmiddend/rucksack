@@ -1,3 +1,4 @@
+#include "main.hpp"
 #include "testbed.hpp"
 #include <rucksack/widget/master_and_slaves.hpp>
 #include <rucksack/widget/viewport_adaptor.hpp>
@@ -5,6 +6,9 @@
 #include <sge/systems/instance.hpp>
 #include <sge/image/colors.hpp>
 #include <sge/image/color/any/object.hpp>
+#include <awl/main/exit_code.hpp>
+#include <awl/main/exit_failure.hpp>
+#include <awl/main/function_context_fwd.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/io/cerr.hpp>
 #include <fcppt/random/uniform.hpp>
@@ -19,7 +23,9 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <fcppt/config/external_end.hpp>
 
-int main()
+awl::main::exit_code const
+rucksack::examples::main(
+	awl::main::function_context const &)
 try
 {
 	rucksack::examples::testbed testbed_(
@@ -118,7 +124,7 @@ try
 			sge::image::colors::red());
 	}
 
-	testbed_.run();
+	return testbed_.run();
 }
 catch(
 	fcppt::exception const &error)
@@ -127,5 +133,5 @@ catch(
 		<< error.string()
 		<< FCPPT_TEXT('\n');
 
-	return EXIT_FAILURE;
+	return awl::main::exit_failure();
 }

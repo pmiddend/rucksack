@@ -3,9 +3,6 @@
 #include "testbed_impl.hpp"
 #include <rucksack/widget/base.hpp>
 #include <sge/image/colors.hpp>
-#include <sge/input/keyboard/action.hpp>
-#include <sge/input/keyboard/key_code.hpp>
-#include <sge/input/keyboard/device.hpp>
 #include <sge/renderer/depth_stencil_buffer.hpp>
 #include <sge/renderer/no_multi_sampling.hpp>
 #include <sge/renderer/parameters.hpp>
@@ -22,11 +19,12 @@
 #include <sge/systems/input_helper.hpp>
 #include <sge/systems/input_helper_field.hpp>
 #include <sge/systems/list.hpp>
+#include <sge/systems/quit_on_escape.hpp>
 #include <sge/systems/renderer.hpp>
-#include <sge/systems/running_to_false.hpp>
 #include <sge/systems/window.hpp>
 #include <sge/viewport/fill_on_resize.hpp>
 #include <sge/window/parameters.hpp>
+#include <awl/main/exit_code.hpp>
 #include <fcppt/container/bitfield/basic_impl.hpp>
 #include <fcppt/log/activate_levels.hpp>
 #include <fcppt/log/level.hpp>
@@ -58,13 +56,8 @@ rucksack::examples::testbed_impl::testbed_impl(
 		systems_.renderer(),
 		sge::sprite::buffers::option::dynamic),
 	quit_connection_(
-		systems_.keyboard_collector().key_callback(
-			sge::input::keyboard::action(
-				sge::input::keyboard::key_code::escape,
-				sge::systems::running_to_false(
-					running_)))),
-	running_(
-		true)
+		sge::systems::quit_on_escape(
+			systems_))
 {
 	fcppt::log::activate_levels(
 		sge::log::global(),
@@ -85,13 +78,12 @@ rucksack::examples::testbed_impl::add_widget(
 						_color))));
 }
 
-void
+awl::main::exit_code const
 rucksack::examples::testbed_impl::run()
 {
-	while(running_)
+	while(
+		systems_.window_system().poll())
 	{
-		systems_.window_system().poll();
-
 		this->update();
 
 		sge::renderer::scoped_block const block_(
@@ -99,6 +91,9 @@ rucksack::examples::testbed_impl::run()
 
 		this->render();
 	}
+
+	return
+		systems_.window_system().exit_code();
 }
 
 void

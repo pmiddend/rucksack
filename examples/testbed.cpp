@@ -1,5 +1,6 @@
 #include "testbed.hpp"
 #include "testbed_impl.hpp"
+#include <awl/main/exit_code.hpp>
 #include <fcppt/make_unique_ptr.hpp>
 
 rucksack::examples::testbed::testbed(
@@ -22,7 +23,7 @@ rucksack::examples::testbed::add_widget(
 			_color);
 }
 
-void
+awl::main::exit_code const
 rucksack::examples::testbed::run()
 {
 	return

@@ -6,6 +6,7 @@
 #include <sge/image/color/any/object_fwd.hpp>
 #include <sge/systems/instance_fwd.hpp>
 #include <sge/window/title.hpp>
+#include <awl/main/exit_code.hpp>
 #include <fcppt/scoped_ptr.hpp>
 #include <fcppt/noncopyable.hpp>
 
@@ -27,7 +28,7 @@ public:
 		widget::base &,
 		sge::image::color::any::object const &);
 
-	void
+	awl::main::exit_code const
 	run();
 
 	void
