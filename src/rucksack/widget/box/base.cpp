@@ -354,7 +354,7 @@ rucksack::widget::box::base::relayout_major_axis()
 
 	if(remaining < 0)
 	{
-		fcppt::io::clog() << FCPPT_TEXT("The minimum size of all widgets together is ") << remaining << FCPPT_TEXT(" pixels too large!");
+		fcppt::io::clog() << FCPPT_TEXT("The minimum size of all widgets together is ") << remaining << FCPPT_TEXT(" pixels too large!\n");
 		return;
 	}
 
