@@ -1,22 +1,34 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 2.6)
 
-PROJECT(rucksack)
+project(rucksack)
 
-INCLUDE(FcpptCMakeUtils)
+include(FcpptCMakeUtils)
+
+include(
+	FcpptSymbol
+)
 
 # boost begin
-FIND_PACKAGE(
+find_package(
 	Boost 1.45.0 REQUIRED COMPONENTS
 	system)
 
-INCLUDE_DIRECTORIES(SYSTEM ${Boost_INCLUDE_DIR})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIRS})
+
+# boost-1.48 is broken with fusion, workaround
+if(
+	MSVC AND ${Boost_VERSION} STREQUAL "104800")
+	add_definitions(
+		-D BOOST_FUSION_DONT_USE_PREPROCESSED_FILES
+	)
+endif()
 # boost end
 
 # fcppt begin
-FIND_PACKAGE(Fcppt REQUIRED)
-INCLUDE_DIRECTORIES(${Fcppt_INCLUDE_DIRS})
-ADD_DEFINITIONS(${Fcppt_DEFINITIONS})
+find_package(Fcppt REQUIRED)
+include_directories(${Fcppt_INCLUDE_DIRS})
+add_definitions(${Fcppt_DEFINITIONS})
 # fcppt end
 
 # sge begin
@@ -31,20 +43,32 @@ FIND_PACKAGE(
 	sprite
 	systems)
 
-INCLUDE_DIRECTORIES(${SGE_INCLUDE_DIRS})
-ADD_DEFINITIONS(${SGE_DEFINITIONS})
+include_directories(${SGE_INCLUDE_DIRS})
+add_definitions(${SGE_DEFINITIONS})
 # sge end
 
 # get rid of a pretty useless warning
-IF(CMAKE_COMPILER_IS_GNUCXX OR FCPPT_UTILS_COMPILER_IS_CLANGPP)
-	REMOVE_DEFINITIONS(-Wold-style-cast)
-ENDIF()
+if(CMAKE_COMPILER_IS_GNUCXX OR FCPPT_UTILS_COMPILER_IS_CLANGPP)
+	remove_definitions(
+		-Wold-style-cast)
+endif()
 
-SET(
+set(
 	INSTALL_MEDIA_DIR
 	${INSTALL_DATA_DIR}/media)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
+include_directories(
+	${CMAKE_SOURCE_DIR}/include)
+
+fcppt_generate_symbol_header(
+	RUCKSACK_STATIC_LINK
+	rucksack
+	RUCKSACK
+	rucksack
+)
+
+include_directories(
+	${CMAKE_BINARY_DIR}/include)
 
 SET(
 	RUCKSACK_FILES
@@ -61,15 +85,116 @@ SET(
 	src/rucksack/widget/viewport_adaptor.cpp
 )
 
-FCPPT_UTILS_ADD_SOURCE_GROUPS("${RUCKSACK_FILES}")
+fcppt_utils_add_source_groups(
+	"${RUCKSACK_FILES}")
 
-ADD_LIBRARY(
-	rucksack SHARED ${RUCKSACK_FILES})
+option(
+	ENABLE_SHARED
+	"Build rucksack as a shared library"
+	TRUE
+)
 
-TARGET_LINK_LIBRARIES(
-	rucksack
-	${SGE_LIBRARIES}
-	${Fcppt_core_LIBRARIES})
+option(
+	ENABLE_STATIC
+	"Build rucksack as a static library"
+	FALSE
+)
+
+if(
+	NOT ENABLE_SHARED AND NOT ENABLE_STATIC
+)
+	message(
+		FATAL_ERROR
+		"You disabled both STATIC and SHARED"
+	)
+endif()
+
+# choose a library to link the tests to
+if(
+	ENABLE_SHARED
+)
+	set(
+		RUCKSACK_DEFAULT_LINK_TARGET
+		rucksack
+	)
+endif()
+
+# static overrides shared
+if(
+	ENABLE_STATIC
+)
+	set(
+		RUCKSACK_DEFAULT_LINK_TARGET
+		rucksack_static
+	)
+
+	set(
+		RUCKSACK_CONFIG_LINK_MACROS
+		"-D RUCKSACK_STATIC_LINK"
+	)
+endif()
+
+function(
+	MAKE_RUCKSACK_LIBRARY
+	TARGETNAME
+	VARIANT
+)
+	add_library(
+		${TARGETNAME}
+		${VARIANT}
+		${RUCKSACK_FILES}
+	)
+
+	if(
+		NOT MSVC
+	)
+		target_link_libraries(
+			${TARGETNAME}
+			${Boost_SYSTEM_LIBRARY}
+		)
+	endif()
+
+	if(
+		${VARIANT} STREQUAL "STATIC"
+	)
+		set_target_properties(
+			${TARGETNAME}
+			PROPERTIES
+			COMPILE_DEFINITIONS
+			"RUCKSACK_STATIC_LINK"
+		)
+	endif()
+
+	target_link_libraries(
+		${TARGETNAME}
+		${Fcppt_core_LIBRARIES}
+		${SGE_LIBRARIES})
+
+	install(
+		TARGETS
+		${TARGETNAME}
+		DESTINATION
+		${INSTALL_LIBRARY_DIR}
+	)
+endfunction()
+
+if(
+	ENABLE_STATIC
+)
+	make_rucksack_library(
+		rucksack_static
+		STATIC
+	)
+endif()
+
+if(
+	ENABLE_SHARED
+)
+	make_rucksack_library(
+		rucksack
+		SHARED
+	)
+endif()
 
 ADD_SUBDIRECTORY(
 	examples)
