@@ -4,12 +4,11 @@
 #include <rucksack/axis_policy2.hpp>
 #include <rucksack/class_symbol.hpp>
 #include <rucksack/dim.hpp>
+#include <rucksack/rect.hpp>
 #include <rucksack/symbol.hpp>
 #include <rucksack/vector.hpp>
 #include <rucksack/widget/optional_parent.hpp>
 #include <fcppt/noncopyable.hpp>
-#include <fcppt/math/dim/basic_impl.hpp>
-#include <fcppt/math/vector/basic_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <boost/intrusive/list.hpp>
 #include <fcppt/config/external_end.hpp>
@@ -40,6 +39,9 @@ public:
 
 	virtual rucksack::dim const
 	size() const = 0;
+
+	rucksack::rect const
+	area() const;
 
 	virtual rucksack::vector const
 	position() const = 0;

@@ -1,5 +1,6 @@
 #include <rucksack/widget/base.hpp>
 #include <fcppt/optional_impl.hpp>
+#include <fcppt/math/box/basic_impl.hpp>
 
 rucksack::widget::base::~base()
 {
@@ -14,6 +15,15 @@ rucksack::widget::base::base(
 	parent_(
 		_parent)
 {
+}
+
+rucksack::rect const
+rucksack::widget::base::area() const
+{
+	return
+		rucksack::rect(
+			this->position(),
+			this->size());
 }
 
 void
