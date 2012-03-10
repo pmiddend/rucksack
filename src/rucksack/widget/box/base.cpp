@@ -1,3 +1,4 @@
+#include <rucksack/optional_scalar.hpp>
 #include <rucksack/widget/box/base.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/assert/pre.hpp>
@@ -133,14 +134,16 @@ rucksack::widget::box::base::axis_policy() const
 			(rucksack::minimum_size(
 				minimum_size_minor)),
 			rucksack::preferred_size(
-				preferred_size_minor),
+				rucksack::optional_scalar(
+					preferred_size_minor)),
 			rucksack::is_expanding(
 				is_expanding_minor)),
 		major_policy(
 			(rucksack::minimum_size(
 				minimum_size_major)),
 			rucksack::preferred_size(
-				preferred_size_major),
+				rucksack::optional_scalar(
+					preferred_size_major)),
 			rucksack::is_expanding(
 				is_expanding_major));
 
