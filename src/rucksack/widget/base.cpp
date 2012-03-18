@@ -1,6 +1,6 @@
 #include <rucksack/widget/base.hpp>
 #include <fcppt/optional_impl.hpp>
-#include <fcppt/math/box/basic_impl.hpp>
+#include <fcppt/math/box/object_impl.hpp>
 
 rucksack::widget::base::~base()
 {

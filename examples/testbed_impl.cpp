@@ -25,7 +25,7 @@
 #include <sge/viewport/fill_on_resize.hpp>
 #include <sge/window/parameters.hpp>
 #include <awl/main/exit_code.hpp>
-#include <fcppt/container/bitfield/basic_impl.hpp>
+#include <fcppt/container/bitfield/object_impl.hpp>
 #include <fcppt/log/activate_levels.hpp>
 #include <fcppt/log/level.hpp>
 #include <fcppt/text.hpp>

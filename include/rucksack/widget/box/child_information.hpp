@@ -3,7 +3,7 @@
 
 #include <rucksack/alignment.hpp>
 #include <rucksack/dim.hpp>
-#include <fcppt/math/dim/basic_impl.hpp>
+#include <fcppt/math/dim/object_impl.hpp>
 
 namespace rucksack
 {

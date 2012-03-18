@@ -10,7 +10,7 @@
 #include <rucksack/widget/optional_parent.hpp>
 #include <rucksack/widget/box/child_information.hpp>
 #include <fcppt/noncopyable.hpp>
-#include <fcppt/math/vector/basic_impl.hpp>
+#include <fcppt/math/vector/object_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <list>
 #include <utility>

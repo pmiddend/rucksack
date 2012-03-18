@@ -6,8 +6,8 @@
 #include <rucksack/widget/enumeration.hpp>
 #include <rucksack/widget/box/base.hpp>
 #include <fcppt/noncopyable.hpp>
-#include <fcppt/math/dim/basic_impl.hpp>
-#include <fcppt/math/vector/basic_impl.hpp>
+#include <fcppt/math/dim/object_impl.hpp>
+#include <fcppt/math/vector/object_impl.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <vector>
 #include <fcppt/config/external_end.hpp>

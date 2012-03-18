@@ -5,8 +5,8 @@
 #include <rucksack/vector.hpp>
 #include <rucksack/widget/base.hpp>
 #include <fcppt/noncopyable.hpp>
-#include <fcppt/math/dim/basic_impl.hpp>
-#include <fcppt/math/vector/basic_impl.hpp>
+#include <fcppt/math/dim/object_impl.hpp>
+#include <fcppt/math/vector/object_impl.hpp>
 
 namespace rucksack
 {
