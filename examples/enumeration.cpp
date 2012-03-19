@@ -11,11 +11,10 @@
 #include <awl/main/function_context_fwd.hpp>
 #include <fcppt/text.hpp>
 #include <fcppt/io/cerr.hpp>
-#include <fcppt/random/uniform.hpp>
-#include <fcppt/random/default_generator.hpp>
-#include <fcppt/random/make_inclusive_range.hpp>
-#include <fcppt/chrono/high_resolution_clock.hpp>
-#include <fcppt/chrono/duration_impl.hpp>
+#include <fcppt/random/variate.hpp>
+#include <fcppt/random/distribution/uniform_int.hpp>
+#include <fcppt/random/generator/minstd_rand.hpp>
+#include <fcppt/random/generator/seed_from_chrono.hpp>
 #include <fcppt/make_unique_ptr.hpp>
 #include <fcppt/container/ptr/push_back_unique_ptr.hpp>
 #include <fcppt/config/external_begin.hpp>
@@ -46,21 +45,32 @@ try
 	viewport_box.child(
 		enumeration_box);
 
-	fcppt::random::default_generator def_gen(
-		static_cast<fcppt::random::default_generator::result_type>(
-			fcppt::chrono::high_resolution_clock::now().time_since_epoch().count()));
+	typedef fcppt::random::generator::minstd_rand default_generator;
 
-	fcppt::random::uniform<rucksack::scalar,fcppt::random::default_generator &>
+	default_generator def_gen(
+		fcppt::random::generator::seed_from_chrono<
+			default_generator::seed
+		>());
+
+	typedef fcppt::random::distribution::uniform_int<
+		rucksack::scalar
+	> scalar_distribution;
+
+	fcppt::random::variate<default_generator, scalar_distribution>
 		size_rng_w(
-			fcppt::random::make_inclusive_range(
-				10,
-				300),
-			def_gen),
+			def_gen,
+			scalar_distribution(
+				scalar_distribution::min(
+					10),
+				scalar_distribution::max(
+					300))),
 		size_rng_h(
-			fcppt::random::make_inclusive_range(
-				10,
-				300),
-			def_gen);
+			def_gen,
+			scalar_distribution(
+				scalar_distribution::min(
+					10),
+				scalar_distribution::max(
+					300)));
 
 	typedef
 	boost::ptr_vector<rucksack::widget::dummy>
