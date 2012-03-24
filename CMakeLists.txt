@@ -10,7 +10,8 @@ include(
 
 # boost begin
 find_package(
-	Boost 1.45.0 REQUIRED COMPONENTS
+	Boost 1.47.0 REQUIRED COMPONENTS
+	chrono
 	system)
 
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
