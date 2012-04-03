@@ -55,6 +55,7 @@ rucksack::examples::testbed_impl::testbed_impl(
 	buffers_(
 		systems_.renderer(),
 		sge::sprite::buffers::option::dynamic),
+	sprites_(),
 	quit_connection_(
 		sge::systems::quit_on_escape(
 			systems_))

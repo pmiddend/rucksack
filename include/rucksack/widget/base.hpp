@@ -9,6 +9,9 @@
 #include <rucksack/vector.hpp>
 #include <rucksack/widget/optional_parent.hpp>
 #include <fcppt/noncopyable.hpp>
+#include <fcppt/preprocessor/disable_gcc_warning.hpp>
+#include <fcppt/preprocessor/pop_warning.hpp>
+#include <fcppt/preprocessor/push_warning.hpp>
 #include <fcppt/config/external_begin.hpp>
 #include <boost/intrusive/list.hpp>
 #include <fcppt/config/external_end.hpp>
@@ -18,6 +21,10 @@ namespace rucksack
 {
 namespace widget
 {
+
+FCPPT_PP_PUSH_WARNING
+FCPPT_PP_DISABLE_GCC_WARNING(-Weffc++)
+
 class RUCKSACK_CLASS_SYMBOL base
 :
 	public
@@ -26,6 +33,8 @@ class RUCKSACK_CLASS_SYMBOL base
 			boost::intrusive::link_mode<boost::intrusive::auto_unlink>
 		>
 {
+FCPPT_PP_POP_WARNING
+
 FCPPT_NONCOPYABLE(
 	base);
 public:
