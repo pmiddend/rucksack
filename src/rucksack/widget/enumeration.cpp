@@ -59,13 +59,15 @@ rucksack::widget::enumeration::axis_policy() const
 			rucksack::axis_policy(
 				rucksack::minimum_size(
 					0),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					true)),
 			rucksack::axis_policy(
 				rucksack::minimum_size(
 					0),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					true)),
 			aspect_);

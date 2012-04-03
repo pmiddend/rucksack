@@ -82,13 +82,19 @@ rucksack::widget::viewport_adaptor::axis_policy() const
 	return
 		rucksack::axis_policy2(
 			rucksack::axis_policy(
-				rucksack::minimum_size(),
-				rucksack::preferred_size(),
-				rucksack::is_expanding()),
+				rucksack::minimum_size(
+					rucksack::scalar()),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
+				rucksack::is_expanding(
+					false)),
 			rucksack::axis_policy(
-				rucksack::minimum_size(),
-				rucksack::preferred_size(),
-				rucksack::is_expanding()),
+				rucksack::minimum_size(
+					rucksack::scalar()),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
+				rucksack::is_expanding(
+					false)),
 			rucksack::aspect(
 				1,
 				1));

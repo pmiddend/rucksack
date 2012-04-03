@@ -70,7 +70,8 @@ rucksack::widget::master_and_slaves::axis_policy() const
 						0
 					:
 						master_pane_->axis_policy().x().minimum_size()),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					true)),
 			rucksack::axis_policy(
@@ -80,7 +81,8 @@ rucksack::widget::master_and_slaves::axis_policy() const
 						0
 					:
 						master_pane_->axis_policy().y().minimum_size()),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					true)),
 			rucksack::aspect(

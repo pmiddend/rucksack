@@ -63,13 +63,15 @@ try
 			rucksack::axis_policy(
 				rucksack::minimum_size(
 					100),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					false)),
 			rucksack::axis_policy(
 				rucksack::minimum_size(
 					50),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					false)),
 			rucksack::aspect(
@@ -85,13 +87,15 @@ try
 			rucksack::axis_policy(
 				rucksack::minimum_size(
 					200),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					false)),
 			rucksack::axis_policy(
 				rucksack::minimum_size(
 					50),
-				rucksack::preferred_size(),
+				rucksack::preferred_size(
+					rucksack::optional_scalar()),
 				rucksack::is_expanding(
 					false)),
 			rucksack::aspect(
