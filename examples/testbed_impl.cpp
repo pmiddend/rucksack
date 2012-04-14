@@ -28,6 +28,7 @@
 #include <fcppt/container/bitfield/object_impl.hpp>
 #include <fcppt/log/activate_levels.hpp>
 #include <fcppt/log/level.hpp>
+#include <fcppt/signal/auto_connection.hpp>
 #include <fcppt/text.hpp>
 
 rucksack::examples::testbed_impl::testbed_impl(

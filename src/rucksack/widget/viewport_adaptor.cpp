@@ -11,6 +11,7 @@
 #include <fcppt/preprocessor/disable_vc_warning.hpp>
 #include <fcppt/preprocessor/pop_warning.hpp>
 #include <fcppt/preprocessor/push_warning.hpp>
+#include <fcppt/signal/auto_connection.hpp>
 #include <fcppt/tr1/functional.hpp>
 
 
