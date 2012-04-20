@@ -3,14 +3,15 @@
 #include "testbed_impl.hpp"
 #include <rucksack/widget/base.hpp>
 #include <sge/image/colors.hpp>
+#include <sge/renderer/bit_depth.hpp>
 #include <sge/renderer/depth_stencil_buffer.hpp>
 #include <sge/renderer/no_multi_sampling.hpp>
 #include <sge/renderer/parameters.hpp>
 #include <sge/renderer/scoped_block.hpp>
+#include <sge/renderer/windowed.hpp>
 #include <sge/window/system.hpp>
 #include <sge/sprite/config/unit_type.hpp>
 #include <sge/sprite/config/float_type.hpp>
-#include <sge/renderer/visual_depth.hpp>
 #include <sge/log/global.hpp>
 #include <sge/renderer/vsync.hpp>
 #include <sge/sprite/compare/default.hpp>
@@ -44,7 +45,8 @@ rucksack::examples::testbed_impl::testbed_impl(
 						768))))
 		(sge::systems::renderer(
 				sge::renderer::parameters(
-					sge::renderer::visual_depth::depth32,
+					sge::renderer::windowed(
+						sge::renderer::bit_depth::depth32),
 					sge::renderer::depth_stencil_buffer::off,
 					sge::renderer::vsync::on,
 					sge::renderer::no_multi_sampling),
