@@ -1,6 +1,6 @@
 #include <rucksack/widget/viewport_adaptor.hpp>
 #include <sge/renderer/device.hpp>
-#include <sge/renderer/onscreen_target.hpp>
+#include <sge/renderer/target/onscreen.hpp>
 #include <sge/viewport/manager.hpp>
 #include <fcppt/exception.hpp>
 #include <fcppt/text.hpp>
@@ -41,10 +41,10 @@ rucksack::widget::viewport_adaptor::size(
 	rucksack::dim const &_size)
 {
 	renderer_.onscreen_target().viewport(
-		sge::renderer::viewport(
-			sge::renderer::viewport::value_type(
+		sge::renderer::target::viewport(
+			sge::renderer::pixel_rect(
 				renderer_.onscreen_target().viewport().get().pos(),
-				fcppt::math::dim::structure_cast<sge::renderer::viewport::value_type::dim>(
+				fcppt::math::dim::structure_cast<sge::renderer::pixel_rect::dim>(
 					_size))));
 }
 
@@ -53,9 +53,9 @@ rucksack::widget::viewport_adaptor::position(
 	rucksack::vector const &_pos)
 {
 	renderer_.onscreen_target().viewport(
-		sge::renderer::viewport(
-			sge::renderer::viewport::value_type(
-				fcppt::math::vector::structure_cast<sge::renderer::viewport::value_type::vector>(
+		sge::renderer::target::viewport(
+			sge::renderer::pixel_rect(
+				fcppt::math::vector::structure_cast<sge::renderer::pixel_rect::vector>(
 					_pos),
 				renderer_.onscreen_target().viewport().get().size())));
 }

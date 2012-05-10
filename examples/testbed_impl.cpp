@@ -1,3 +1,6 @@
+#include <sge/renderer/target/onscreen.hpp>
+#include <sge/renderer/context/scoped.hpp>
+#include <sge/renderer/device.hpp>
 #include <sge/sprite/geometry/make_random_access_range.hpp>
 #include <sge/sprite/process/all.hpp>
 #include "testbed_impl.hpp"
@@ -7,7 +10,6 @@
 #include <sge/renderer/depth_stencil_buffer.hpp>
 #include <sge/renderer/no_multi_sampling.hpp>
 #include <sge/renderer/parameters.hpp>
-#include <sge/renderer/scoped_block.hpp>
 #include <sge/renderer/windowed.hpp>
 #include <sge/window/system.hpp>
 #include <sge/sprite/config/unit_type.hpp>
@@ -90,10 +92,12 @@ rucksack::examples::testbed_impl::run()
 	{
 		this->update();
 
-		sge::renderer::scoped_block const block_(
-			systems_.renderer());
+		sge::renderer::context::scoped const scoped_block(
+			systems_.renderer(),
+			systems_.renderer().onscreen_target());
 
-		this->render();
+		this->render(
+			scoped_block.get());
 	}
 
 	return
@@ -117,7 +121,8 @@ rucksack::examples::testbed_impl::update()
 }
 
 void
-rucksack::examples::testbed_impl::render()
+rucksack::examples::testbed_impl::render(
+	sge::renderer::context::object &_render_context)
 {
 	/*
 	sge::renderer::state::scoped scoped_state(
@@ -142,6 +147,7 @@ rucksack::examples::testbed_impl::render()
 			it->second);
 
 	sge::sprite::process::all(
+		_render_context,
 		sge::sprite::geometry::make_random_access_range(
 			raw_sprites.begin(),
 			raw_sprites.end()),

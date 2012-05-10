@@ -30,20 +30,6 @@ rucksack::examples::testbed::run()
 		impl_->run();
 }
 
-void
-rucksack::examples::testbed::update()
-{
-	return
-		impl_->update();
-}
-
-void
-rucksack::examples::testbed::render()
-{
-	return
-		impl_->render();
-}
-
 sge::systems::instance const &
 rucksack::examples::testbed::systems() const
 {

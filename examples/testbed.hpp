@@ -31,12 +31,6 @@ public:
 	awl::main::exit_code const
 	run();
 
-	void
-	update();
-
-	void
-	render();
-
 	sge::systems::instance const &
 	systems() const;
 

@@ -14,6 +14,7 @@
 #include <fcppt/config/external_end.hpp>
 #include <sge/image/color/any/object_fwd.hpp>
 #include <sge/image/color/rgba8_format.hpp>
+#include <sge/renderer/context/object_fwd.hpp>
 #include <sge/sprite/config/choices.hpp>
 #include <sge/sprite/object.hpp>
 #include <sge/sprite/parameters.hpp>
@@ -50,7 +51,8 @@ public:
 	update();
 
 	void
-	render();
+	render(
+		sge::renderer::context::object &);
 
 	sge::systems::instance const &
 	systems() const;
