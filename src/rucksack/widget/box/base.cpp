@@ -236,7 +236,6 @@ rucksack::widget::box::base::relayout()
 				break;
 			case alignment::size:
 				FCPPT_ASSERT_UNREACHABLE;
-				break;
 		}
 
 		widget_ptr_information_pair_it->first->position(
