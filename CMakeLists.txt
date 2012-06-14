@@ -32,6 +32,15 @@ include_directories(${Fcppt_INCLUDE_DIRS})
 add_definitions(${Fcppt_DEFINITIONS})
 # fcppt end
 
+# awl begin
+find_package(
+	Awl REQUIRED)
+include_directories(
+	${Awl_INCLUDE_DIR})
+add_definitions(
+	${Awl_DEFINITIONS})
+# awl end
+
 # sge begin
 FIND_PACKAGE(
 	SGE REQUIRED COMPONENTS
@@ -42,7 +51,16 @@ FIND_PACKAGE(
 	viewport
 	window
 	sprite
-	systems)
+	systems
+	# The following is only required for static linking (make this optional later)
+	core
+	plugin
+	audio
+	media
+	font
+	image2d
+	config
+	charconv)
 
 include_directories(${SGE_INCLUDE_DIRS})
 add_definitions(${SGE_DEFINITIONS})
@@ -169,6 +187,7 @@ function(
 	target_link_libraries(
 		${TARGETNAME}
 		${Fcppt_core_LIBRARIES}
+		${Awl_LIBRARIES}
 		${SGE_LIBRARIES})
 
 	install(

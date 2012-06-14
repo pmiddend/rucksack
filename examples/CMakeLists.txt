@@ -1,8 +1,11 @@
 include(
 	AwlMainGenerator)
 
-ADD_LIBRARY(
+add_library(
 	rucksack_testbed STATIC testbed.cpp testbed_impl.cpp)
+
+add_definitions(
+	${RUCKSACK_CONFIG_LINK_MACROS})
 
 FUNCTION(
 	ADD_RUCKSACK_EXAMPLE

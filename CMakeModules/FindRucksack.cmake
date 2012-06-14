@@ -8,6 +8,7 @@
 #
 # This modules accepts the following variables
 #
+#	SGE_USE_STATIC_LIBS  - Use static linking.
 #	RUCKSACK_INCLUDEDIR    - Hint where the rucksack includes might be.
 #	RUCKSACK_LIBRARYDIR    - Hint where the rucksack libraries might be.
 
@@ -26,6 +27,16 @@ if(
 	set(
 		RUCKSACK_FIND_OPTIONS
 		"REQUIRED"
+	)
+endif()
+
+#Set SGE_DEFINITIONS for static linking
+if(
+	Rucksack_USE_STATIC_LIBS
+)
+	set(
+		Rucksack_DEFINITIONS
+		"-D RUCKSACK_STATIC_LINK"
 	)
 endif()
 
@@ -63,10 +74,22 @@ find_path(
 	HINTS ${RUCKSACK_INCLUDEDIR}
 )
 
+if(
+	Rucksack_USE_STATIC_LIBS
+)
+	set(
+		RUCKSACK_CURRENT_LIB
+		rucksack_static)
+else()
+	set(
+		RUCKSACK_CURRENT_LIB
+		rucksack)
+endif()
+
 find_library(
 	Rucksack_LIBRARY
-	NAMES rucksack
-	HINTS ${RUCKSACK_LIBRARYDIR}
+	NAMES ${RUCKSACK_CURRENT_LIB}
+	HINTS "${RUCKSACK_LIBRARYDIR}"
 )
 
 include(
