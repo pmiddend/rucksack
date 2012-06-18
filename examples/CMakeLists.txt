@@ -21,6 +21,7 @@ FUNCTION(
 		"rucksack::examples::main"
 		${EXAMPLE_NAME}.cpp)
 
+
 	TARGET_LINK_LIBRARIES (
 		${FULL_NAME}
 		${RUCKSACK_DEFAULT_LINK_TARGET}
