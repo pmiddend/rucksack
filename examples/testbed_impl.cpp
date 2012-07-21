@@ -1,4 +1,5 @@
 #include <sge/renderer/target/onscreen.hpp>
+#include <sge/renderer/parameters/object.hpp>
 #include <sge/renderer/context/scoped.hpp>
 #include <sge/renderer/device.hpp>
 #include <sge/sprite/geometry/make_random_access_range.hpp>
@@ -6,16 +7,12 @@
 #include "testbed_impl.hpp"
 #include <rucksack/widget/base.hpp>
 #include <sge/image/colors.hpp>
-#include <sge/renderer/bit_depth.hpp>
-#include <sge/renderer/depth_stencil_buffer.hpp>
-#include <sge/renderer/no_multi_sampling.hpp>
-#include <sge/renderer/parameters.hpp>
-#include <sge/renderer/windowed.hpp>
+#include <sge/renderer/parameters/object.hpp>
+#include <sge/renderer/pixel_format/object.hpp>
 #include <sge/window/system.hpp>
 #include <sge/sprite/config/unit_type.hpp>
 #include <sge/sprite/config/float_type.hpp>
 #include <sge/log/global.hpp>
-#include <sge/renderer/vsync.hpp>
 #include <sge/sprite/compare/default.hpp>
 #include <sge/systems/cursor_option_field.hpp>
 #include <sge/systems/input.hpp>
@@ -31,6 +28,7 @@
 #include <fcppt/container/bitfield/object_impl.hpp>
 #include <fcppt/log/activate_levels.hpp>
 #include <fcppt/log/level.hpp>
+#include <fcppt/optional_impl.hpp>
 #include <fcppt/signal/auto_connection.hpp>
 #include <fcppt/text.hpp>
 
@@ -46,12 +44,14 @@ rucksack::examples::testbed_impl::testbed_impl(
 						1024,
 						768))))
 		(sge::systems::renderer(
-				sge::renderer::parameters(
-					sge::renderer::windowed(
-						sge::renderer::bit_depth::depth32),
-					sge::renderer::depth_stencil_buffer::off,
-					sge::renderer::vsync::on,
-					sge::renderer::no_multi_sampling),
+				sge::renderer::parameters::object(
+					sge::renderer::pixel_format::object(
+						sge::renderer::pixel_format::color::depth32,
+						sge::renderer::pixel_format::depth_stencil::off,
+						sge::renderer::pixel_format::optional_multi_samples(),
+						sge::renderer::pixel_format::srgb::no),
+					sge::renderer::parameters::vsync::on,
+					sge::renderer::display_mode::optional_object()),
 				sge::viewport::fill_on_resize()))
 		(sge::systems::input(
 				sge::systems::input_helper_field(
